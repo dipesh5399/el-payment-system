@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Dipesh",
+      "contect": "9879665110",
+      "bankname": "Union",
+      "cardnumber": "5678"
+    },
+    {
+      "id": 2,
+      "name": "Manthan",
+      "contect": "6879404932",
+      "bankname": "SBI",
+      "cardnumber": "5238"
+    },
+    {
+      "id": 3,
+      "name": "Riya",
+      "contect": "798054324",
+      "bankname": "ADC",
+      "cardnumber": "1456"
+    },
+    {
+      "id": 4,
+      "name": "Maitri",
+      "contect": "7698065478",
+      "bankname": "BOI",
+      "cardnumber": "6789"
+    },
+    {
+      "id": 5,
+      "name": "Jainish",
+      "contect": "9754325690",
+      "bankname": "Maharastra bank",
+      "cardnumber": "4590"
+    },
+    {
+      "id": 6,
+      "name": "Kavya",
+      "contect": "7960451234",
+      "bankname": "BOI",
+      "cardnumber": "1298"
+    },
+    {
+      "id": 7,
+      "name": "Riya",
+      "contect": "9806872345",
+      "bankname": "Axis",
+      "cardnumber": "8970"
+    },
+    {
+      "id": 8,
+      "name": "Amit",
+      "contect": "5496084033",
+      "bankname": "ICICI",
+      "cardnumber": "3456"
+    }
+  ]
+}

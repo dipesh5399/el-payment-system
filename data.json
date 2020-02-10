@@ -1,0 +1,8 @@
+{
+    "emp": [
+        {"id":"from data.json ","salary":50000},
+        {"id":2,"salary":40000},
+        {"id":3,"salary":30000},
+        {"id":4,"salary":100000}
+      ]
+}
