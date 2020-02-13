@@ -5,39 +5,8 @@ import SearchInput from "./component/SearchInput";
 import NewUsers from "./component/NewUsers";
 import UserAddForm from "./component/UserAddForm";
 import UserEditForm from "./component/UserEditForm";
-// const addUsers = newname => {
-//   return fetch("http://localhost:3005/users", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json"
-//       //'Content-Type': 'application/x-www-form-urlencoded',
-//     },
-//     body: JSON.stringify({
-//       name: newname
-//     })
-//   });
-// };
-const getUsers = searchParam => {
-  return fetch(
-    searchParam
-      ? `http://localhost:3005/users?q=${searchParam}`
-      : "http://localhost:3005/users"
-  ).then(response => {
-    return response.json();
-  });
-};
-const deleteUsers = userobj => {
-  return fetch(
-    userobj
-      ? `http://localhost:3005/users/${userobj}`
-      : "http://localhost:3005/users",
-    {
-      method: "DELETE"
-    }
-  ).then(response => {
-    return response.json();
-  });
-};
+import { getUsers, deleteUsers, addUsers } from "./ApiServiceProvider";
+
 export default class App extends Component {
   state = {
     isDialogVisible: false,
@@ -45,8 +14,7 @@ export default class App extends Component {
     isEdit: false,
     search: "",
     users: [],
-    user: {},
-    name: ""
+    user: { name: "", contect: "", bankname: "", cardnumber: "" }
   };
   onSearch(event) {
     this.setState({ search: event.target.value }, () => {
@@ -58,16 +26,36 @@ export default class App extends Component {
     });
   }
 
-  onNewUserName(event) {
-    this.setState({ name: event.target.value });
-    console.log(this.state.name);
+  onNameChange(event) {
+    this.setState({
+      name: event.target.value
+    });
+
+    console.log(this.state.user.name);
     // addUsers(this.state.name).then(fetchusers =>
     //   this.setState({
     //     users: fetchusers
     //   })
     // );
   }
-
+  onContectChange(event) {
+    this.setState({
+      contect: event.target.value
+    });
+    console.log(this.state.user.contect);
+  }
+  onBankNameChange(event) {
+    this.setState({
+      bankname: event.target.value
+    });
+    console.log(this.state.user.bankname);
+  }
+  onCardNumberChange(event) {
+    this.setState({
+      cardumber: event.target.value
+    });
+    console.log(this.state.user.cardnumber);
+  }
   componentDidMount() {
     getUsers().then(fetchusers =>
       this.setState({
@@ -86,6 +74,7 @@ export default class App extends Component {
   }
 
   handlerEditUserClick(userobj) {
+    console.log(userobj);
     this.setState(state => ({
       ...state,
       user: userobj,
@@ -94,10 +83,24 @@ export default class App extends Component {
     }));
     console.log(this.state.user);
   }
-  handlerDeleteUserClick(userobj) {
+  handlerDeleteUserClick(userid) {
     console.log("delete button clicked");
-    console.log(userobj);
-    deleteUsers(userobj).then(fetchusers =>
+    console.log(userid);
+    deleteUsers(userid).then(fetchusers =>
+      this.setState({
+        users: fetchusers
+      })
+    );
+  }
+  handlerOnSubmit(newuser) {
+    console.log(newuser);
+    this.setState(state => ({
+      ...state,
+      user: newuser,
+      isAdd: !state.isAdd,
+      isDialogVisible: !state.isDialogVisible
+    }));
+    addUsers(this.state.user).then(fetchusers =>
       this.setState({
         users: fetchusers
       })
@@ -112,16 +115,29 @@ export default class App extends Component {
         />
         <NewUsers onAddUserClick={this.handlerNewUserButtonClick.bind(this)} />
 
-        {this.state.isAdd && <UserAddForm />}
+        {this.state.isAdd && (
+          <UserAddForm
+            nameKey={this.state.user}
+            onNameChange={this.onNameChange.bind(this)}
+            onContectChange={this.onContectChange.bind(this)}
+            onBankNameChange={this.onBankNameChange.bind(this)}
+            onCardNumberChange={this.onCardNumberChange.bind(this)}
+            onClick={this.handlerOnSubmit.bind(this)}
+          />
+        )}
         {this.state.isEdit && (
           <UserEditForm
-            nameKey={this.state.name}
-            name={this.state.user.name}
-            onChange={this.onNewUserName.bind(this)}
-            contactno={this.state.user.contect}
-            bankname={this.state.user.bankname}
-            cardnumber={this.state.user.cardnumber}
-            onSubmitClick
+            onNameChange={this.onNameChange.bind(this)}
+            onContectChange={this.onContectChange.bind(this)}
+            onBankNameChange={this.onBankNameChange.bind(this)}
+            onCardNumberChange={this.onCardNumberChange.bind(this)}
+            nameKey={this.state.user}
+            // name={this.state.user.name}
+            //
+            // contactno={this.state.user.contect}
+            // bankname={this.state.user.bankname}
+            // cardnumber={this.state.user.cardnumber}
+            // onSubmitClick
           />
         )}
         {/* {this.setState({
