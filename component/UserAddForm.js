@@ -10,7 +10,7 @@ const UserAddForm = props => {
               <label>Name :</label>
             </td>
             <td>
-              <input value={props.nameKey} onChange={props.onChange} />
+              <input value={props.nameKey.name} onChange={props.onNameChange} />
             </td>
           </tr>
           <tr class="form-group">
@@ -19,7 +19,12 @@ const UserAddForm = props => {
             </td>
             <td>
               {" "}
-              <input type="text" class="form-control" value={props.contactno} />
+              <input
+                type="text"
+                class="form-control"
+                value={props.nameKey.contect}
+                onChange={props.onContectChange}
+              />
             </td>
           </tr>
           <tr class="form-group">
@@ -27,7 +32,12 @@ const UserAddForm = props => {
               <label>Name Of Bank :</label>
             </td>
             <td>
-              <input type="text" class="form-control" value={props.bankname} />
+              <input
+                type="text"
+                class="form-control"
+                value={props.nameKey.bankname}
+                onChange={props.onBankNameChange}
+              />
             </td>
           </tr>
           <tr class="form-group">
@@ -38,12 +48,13 @@ const UserAddForm = props => {
               <input
                 type="text"
                 class="form-control"
-                value={props.cardnumber}
+                value={props.nameKey.cardnumber}
+                onChange={props.onCardNumberChange}
               />
             </td>
           </tr>
           <tr>
-            <button onClick={props.onSubmitClick}>Submit</button>
+            <button onClick={props.onClick}>Submit</button>
           </tr>
         </table>
       </form>
