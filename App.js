@@ -5,7 +5,12 @@ import SearchInput from "./component/SearchInput";
 import NewUsers from "./component/NewUsers";
 import UserAddForm from "./component/UserAddForm";
 import UserEditForm from "./component/UserEditForm";
-import { getUsers, deleteUsers, addUsers } from "./ApiServiceProvider";
+import {
+  getUsers,
+  deleteUsers,
+  addUsers,
+  editUsers
+} from "./ApiServiceProvider";
 
 export default class App extends Component {
   state = {
@@ -14,7 +19,13 @@ export default class App extends Component {
     isEdit: false,
     search: "",
     users: [],
-    user: { name: "", contect: "", bankname: "", cardnumber: "" }
+    user: {
+      id: "",
+      name: "",
+      contect: "",
+      bankname: "",
+      cardnumber: ""
+    }
   };
   onSearch(event) {
     this.setState({ search: event.target.value }, () => {
@@ -28,33 +39,39 @@ export default class App extends Component {
 
   onNameChange(event) {
     this.setState({
-      name: event.target.value
+      user: {
+        ...this.state.user,
+        name: event.target.value
+      }
     });
-
-    console.log(this.state.user.name);
-    // addUsers(this.state.name).then(fetchusers =>
-    //   this.setState({
-    //     users: fetchusers
-    //   })
-    // );
+    console.log(this.state.user);
   }
+
   onContectChange(event) {
     this.setState({
-      contect: event.target.value
+      user: {
+        ...this.state.user,
+        contect: event.target.value
+      }
     });
-    console.log(this.state.user.contect);
+    console.log(this.state.user);
   }
   onBankNameChange(event) {
     this.setState({
-      bankname: event.target.value
+      user: {
+        ...this.state.user,
+        bankname: event.target.value
+      }
     });
-    console.log(this.state.user.bankname);
+    console.log(this.state.user);
   }
   onCardNumberChange(event) {
     this.setState({
-      cardumber: event.target.value
+      user: {
+        ...this.state.user,
+        cardnumber: event.target.value
+      }
     });
-    console.log(this.state.user.cardnumber);
   }
   componentDidMount() {
     getUsers().then(fetchusers =>
@@ -86,25 +103,51 @@ export default class App extends Component {
   handlerDeleteUserClick(userid) {
     console.log("delete button clicked");
     console.log(userid);
-    deleteUsers(userid).then(fetchusers =>
-      this.setState({
-        users: fetchusers
-      })
-    );
+    deleteUsers(userid);
+    window.location.reload(true);
   }
-  handlerOnSubmit(newuser) {
-    console.log(newuser);
+  handlerOnSubmit(newusersdetails) {
+    console.log(newusersdetails);
+    // this.setState(state => ({
+    //   ...state,
+    //   user: newusersdetails
+    // }));
+    if (
+      this.state.user.name === "" ||
+      this.state.user.contect === "" ||
+      this.state.user.bankname === "" ||
+      this.state.user.cardnumber === ""
+    ) {
+      alert("Fillup All Details Properly.");
+    } else {
+      this.setState(state => ({
+        ...state,
+        user: newusersdetails,
+        isAdd: !state.isAdd,
+        isDialogVisible: !state.isDialogVisible,
+        isEdit: false
+      }));
+      addUsers(this.state.user).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+      window.location.reload(true);
+    }
+  }
+  handlerEditOnSubmit(editusersdetails) {
     this.setState(state => ({
       ...state,
-      user: newuser,
-      isAdd: !state.isAdd,
+      user: editusersdetails,
+      isEdit: !state.isEdit,
       isDialogVisible: !state.isDialogVisible
     }));
-    addUsers(this.state.user).then(fetchusers =>
+    editUsers(this.state.user).then(fetchusers =>
       this.setState({
         users: fetchusers
       })
     );
+    window.location.reload(true);
   }
   render() {
     return (
@@ -128,16 +171,11 @@ export default class App extends Component {
         {this.state.isEdit && (
           <UserEditForm
             onNameChange={this.onNameChange.bind(this)}
+            onClick={this.handlerEditOnSubmit.bind(this)}
             onContectChange={this.onContectChange.bind(this)}
             onBankNameChange={this.onBankNameChange.bind(this)}
             onCardNumberChange={this.onCardNumberChange.bind(this)}
             nameKey={this.state.user}
-            // name={this.state.user.name}
-            //
-            // contactno={this.state.user.contect}
-            // bankname={this.state.user.bankname}
-            // cardnumber={this.state.user.cardnumber}
-            // onSubmitClick
           />
         )}
         {/* {this.setState({
@@ -162,19 +200,3 @@ export default class App extends Component {
 //       .indexOf(this.state.search.toLowerCase()) !== -1
 //   );
 // });
-// const handleSort = () => {
-//   console.log("name button clicked.");
-// };
-/* <input
-placeholder="search"
-type="text"
-onChange={this.updatesearch.bind(this)}
-style={{
-  height: "20px",
-  witdh: "150px",
-  position: "absolute",
-  left: "20px"
-  // right: "10px"
-  // top: "5px"
-}}
-></input> */

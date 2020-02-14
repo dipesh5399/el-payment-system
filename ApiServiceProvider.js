@@ -1,26 +1,3 @@
-// import React, { Component } from "react";
-
-// export default class ApiServiceProvider extends Component {
-//   getUsers = searchParam => {
-//     return fetch(
-//       searchParam
-//         ? `http://localhost:3005/users?q=${searchParam}`
-//         : "http://localhost:3005/users"
-//     ).then(response => {
-//       return response.json();
-//     });
-//   };
-//   deleteUsers = userobj => {
-//     return fetch(`http://localhost:3005/users/${userobj}`, {
-//       method: "DELETE"
-//     }).then(response => {
-//       return response.json();
-//     });
-//   };
-//   render() {
-//     return <div></div>;
-//   }
-// }
 export var addUsers = function(addUserDetails) {
   return fetch("http://localhost:3005/users", {
     method: "POST",
@@ -33,6 +10,21 @@ export var addUsers = function(addUserDetails) {
       contect: addUserDetails.contect,
       bankname: addUserDetails.bankname,
       cardnumber: addUserDetails.cardnumber
+    })
+  });
+};
+export var editUsers = function(editUserDetails) {
+  return fetch(`http://localhost:3005/users/${editUserDetails.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify({
+      name: editUserDetails.name,
+      contect: editUserDetails.contect,
+      bankname: editUserDetails.bankname,
+      cardnumber: editUserDetails.cardnumber
     })
   });
 };
