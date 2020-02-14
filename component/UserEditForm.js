@@ -10,7 +10,7 @@ const UserEditForm = props => {
               <label>Name :</label>
             </td>
             <td>
-              <input value={props.nameKey.name} onChange={props.onChange} />
+              <input value={props.nameKey.name} onChange={props.onNameChange} />
             </td>
           </tr>
           <tr class="form-group">
@@ -21,8 +21,9 @@ const UserEditForm = props => {
               {" "}
               <input
                 type="text"
+                class="form-control"
                 value={props.nameKey.contect}
-                onChange={props.onChange}
+                onChange={props.onContectChange}
               />
             </td>
           </tr>
@@ -33,8 +34,9 @@ const UserEditForm = props => {
             <td>
               <input
                 type="text"
+                class="form-control"
                 value={props.nameKey.bankname}
-                onChange={props.onChange}
+                onChange={props.onBankNameChange}
               />
             </td>
           </tr>
@@ -45,13 +47,14 @@ const UserEditForm = props => {
             <td>
               <input
                 type="text"
+                class="form-control"
                 value={props.nameKey.cardnumber}
-                onChange={props.onChange}
+                onChange={props.onCardNumberChange}
               />
             </td>
           </tr>
           <tr>
-            <button onClick={props.onSubmitClick}>Submit</button>
+            <button onClick={props.onClick}>Submit</button>
           </tr>
         </table>
       </form>

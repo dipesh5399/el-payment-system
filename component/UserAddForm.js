@@ -3,61 +3,65 @@ import React from "react";
 const UserAddForm = props => {
   return (
     <div align="center">
-      <form>
-        <table>
-          <tr class="form-group">
-            <td>
-              <label>Name :</label>
-            </td>
-            <td>
-              <input value={props.nameKey.name} onChange={props.onNameChange} />
-            </td>
-          </tr>
-          <tr class="form-group">
-            <td>
-              <label>Contact No. :</label>
-            </td>
-            <td>
-              {" "}
-              <input
-                type="text"
-                class="form-control"
-                value={props.nameKey.contect}
-                onChange={props.onContectChange}
-              />
-            </td>
-          </tr>
-          <tr class="form-group">
-            <td>
-              <label>Name Of Bank :</label>
-            </td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                value={props.nameKey.bankname}
-                onChange={props.onBankNameChange}
-              />
-            </td>
-          </tr>
-          <tr class="form-group">
-            <td>
-              <label>Card Number :</label>
-            </td>
-            <td>
-              <input
-                type="text"
-                class="form-control"
-                value={props.nameKey.cardnumber}
-                onChange={props.onCardNumberChange}
-              />
-            </td>
-          </tr>
-          <tr>
-            <button onClick={props.onClick}>Submit</button>
-          </tr>
-        </table>
-      </form>
+      <table>
+        <tr class="form-group">
+          <td>
+            <label>Name :</label>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={props.nameKey.name}
+              onChange={props.onNameChange}
+              minLength={10}
+              maxLength={10}
+            />
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Contact No. :</label>
+          </td>
+          <td>
+            <input
+              type="number"
+              class="form-control"
+              pattern="[0-9]"
+              value={props.nameKey.contect}
+              onChange={props.onContectChange}
+            />
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Name Of Bank :</label>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={props.nameKey.bankname}
+              onChange={props.onBankNameChange}
+            />
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Card Number :</label>
+          </td>
+          <td>
+            <input
+              type="text"
+              value={props.nameKey.cardnumber}
+              onChange={props.onCardNumberChange}
+            />
+          </td>
+        </tr>
+        <tr>
+          <button type="submit" onClick={props.onClick}>
+            Submit
+          </button>
+        </tr>
+      </table>
     </div>
   );
 };
