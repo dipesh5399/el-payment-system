@@ -25,7 +25,11 @@ export default class App extends Component {
       contect: "",
       bankname: "",
       cardnumber: ""
-    }
+    },
+    sortingnameorder: false,
+    sortingcontectorder: true,
+    sortingbanknameorder: true,
+    sortingcardnumberorder: true
   };
   onSearch(event) {
     this.setState({ search: event.target.value }, () => {
@@ -84,8 +88,10 @@ export default class App extends Component {
     console.log("newuserhandlercalled.");
     this.setState(state => ({
       ...state,
-      isAdd: !state.isAdd,
-      isDialogVisible: !state.isDialogVisible
+      isAdd: true,
+      isDialogVisible: !state.isDialogVisible,
+      isEdit: false,
+      user: { id: "", name: "", contect: "", bankname: "", cardnumber: "" }
     }));
     console.log(this.state.isDialogVisible);
   }
@@ -95,8 +101,9 @@ export default class App extends Component {
     this.setState(state => ({
       ...state,
       user: userobj,
-      isEdit: !state.isEdit,
-      isDialogVisible: !state.isDialogVisible
+      isEdit: true,
+      isDialogVisible: !state.isDialogVisible,
+      isAdd: false
     }));
     console.log(this.state.user);
   }
@@ -108,22 +115,19 @@ export default class App extends Component {
   }
   handlerOnSubmit(newusersdetails) {
     console.log(newusersdetails);
-    // this.setState(state => ({
-    //   ...state,
-    //   user: newusersdetails
-    // }));
     if (
       this.state.user.name === "" ||
       this.state.user.contect === "" ||
       this.state.user.bankname === "" ||
-      this.state.user.cardnumber === ""
+      this.state.user.cardnumber === "" ||
+      this.state.user.contect.length !== 10
     ) {
       alert("Fillup All Details Properly.");
     } else {
       this.setState(state => ({
         ...state,
         user: newusersdetails,
-        isAdd: !state.isAdd,
+        isAdd: true,
         isDialogVisible: !state.isDialogVisible,
         isEdit: false
       }));
@@ -140,7 +144,8 @@ export default class App extends Component {
       ...state,
       user: editusersdetails,
       isEdit: !state.isEdit,
-      isDialogVisible: !state.isDialogVisible
+      isDialogVisible: !state.isDialogVisible,
+      isAdd: false
     }));
     editUsers(this.state.user).then(fetchusers =>
       this.setState({
@@ -149,6 +154,37 @@ export default class App extends Component {
     );
     window.location.reload(true);
   }
+  onClose() {
+    this.setState({
+      isAdd: false,
+      isEdit: false,
+      isDialogVisible: false
+    });
+  }
+  handleSorting(attrib, order) {
+    if (attrib === "name") {
+      getUsers(this.state.search, attrib, order).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+    }
+    if (attrib === "contect") {
+      getUsers(this.state.search, attrib, order).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+    }
+    if (attrib === "bankname") {
+      getUsers(this.state.search, attrib, order).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -157,7 +193,7 @@ export default class App extends Component {
           onChange={this.onSearch.bind(this)}
         />
         <NewUsers onAddUserClick={this.handlerNewUserButtonClick.bind(this)} />
-
+        <br />
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
@@ -166,6 +202,7 @@ export default class App extends Component {
             onBankNameChange={this.onBankNameChange.bind(this)}
             onCardNumberChange={this.onCardNumberChange.bind(this)}
             onClick={this.handlerOnSubmit.bind(this)}
+            onCloseClick={this.onClose.bind(this)}
           />
         )}
         {this.state.isEdit && (
@@ -176,6 +213,7 @@ export default class App extends Component {
             onBankNameChange={this.onBankNameChange.bind(this)}
             onCardNumberChange={this.onCardNumberChange.bind(this)}
             nameKey={this.state.user}
+            onCloseClick={this.onClose.bind(this)}
           />
         )}
         {/* {this.setState({
@@ -188,6 +226,7 @@ export default class App extends Component {
           user={this.state.users}
           onEditUserClick={this.handlerEditUserClick.bind(this)}
           onDeleteUserClick={this.handlerDeleteUserClick.bind(this)}
+          onSortingClick={this.handleSorting.bind(this)}
         />
       </React.Fragment>
     );

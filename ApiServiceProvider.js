@@ -3,7 +3,6 @@ export var addUsers = function(addUserDetails) {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify({
       name: addUserDetails.name,
@@ -18,7 +17,6 @@ export var editUsers = function(editUserDetails) {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: JSON.stringify({
       name: editUserDetails.name,
@@ -28,15 +26,18 @@ export var editUsers = function(editUserDetails) {
     })
   });
 };
-export var getUsers = function(searchParam) {
+export var getUsers = function(searchParam, attrib, order) {
   return fetch(
     searchParam
-      ? `http://localhost:3005/users?q=${searchParam}`
-      : "http://localhost:3005/users"
+      ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}`
+      : `http://localhost:3005/users?_sort=${
+          attrib ? attrib : "name"
+        }&_order=${order}`
   ).then(response => {
     return response.json();
   });
 };
+
 export var deleteUsers = function(userobj) {
   return fetch(`http://localhost:3005/users/${userobj}`, {
     method: "DELETE"
@@ -44,4 +45,3 @@ export var deleteUsers = function(userobj) {
     return response.json();
   });
 };
-// export default ApiServiceProvider;
