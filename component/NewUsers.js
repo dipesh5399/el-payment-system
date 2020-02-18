@@ -5,10 +5,13 @@ const NewUsers = props => {
     <button
       onClick={props.onAddUserClick}
       style={{
-        height: "20px",
+        height: "30px",
         witdh: "150px",
         position: "absolute",
-        right: "20px"
+        borderRadius: "10px",
+        right: "20px",
+        backgroundColor: "blue",
+        color: "white"
       }}
     >
       Add New User

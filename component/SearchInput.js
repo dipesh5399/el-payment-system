@@ -9,10 +9,11 @@ const SearchInput = props => {
         value={props.searchKey}
         onChange={props.onChange}
         style={{
-          height: "20px",
+          height: "30px",
           witdh: "150px",
           position: "absolute",
-          left: "20px"
+          left: "20px",
+          borderRadius: "12px"
         }}
       ></input>
     </div>

@@ -13,8 +13,6 @@ const UserAddForm = props => {
               type="text"
               value={props.nameKey.name}
               onChange={props.onNameChange}
-              minLength={10}
-              maxLength={10}
             />
           </td>
         </tr>
@@ -59,6 +57,9 @@ const UserAddForm = props => {
         <tr>
           <button type="submit" onClick={props.onClick}>
             Submit
+          </button>
+          <button type="Cancel" onClick={props.onCloseClick}>
+            Cancel
           </button>
         </tr>
       </table>

@@ -55,6 +55,9 @@ const UserEditForm = props => {
           </tr>
           <tr>
             <button onClick={props.onClick}>Submit</button>
+            <button type="Cancel" onClick={props.onCloseClick}>
+              Cancel
+            </button>
           </tr>
         </table>
       </form>
