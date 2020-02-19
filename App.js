@@ -26,10 +26,12 @@ export default class App extends Component {
       bankname: "",
       cardnumber: ""
     },
-    sortingnameorder: false,
-    sortingcontectorder: true,
-    sortingbanknameorder: true,
-    sortingcardnumberorder: true
+    fieldError: {
+      nameError: "",
+      contectError: "",
+      banknameError: "",
+      cardnumberError: ""
+    }
   };
   onSearch(event) {
     this.setState({ search: event.target.value }, () => {
@@ -43,6 +45,7 @@ export default class App extends Component {
 
   onNameChange(event) {
     this.setState({
+      fieldError: { ...this.state.fieldError, nameError: "" },
       user: {
         ...this.state.user,
         name: event.target.value
@@ -53,6 +56,7 @@ export default class App extends Component {
 
   onContectChange(event) {
     this.setState({
+      fieldError: { ...this.state.fieldError, contectError: "" },
       user: {
         ...this.state.user,
         contect: event.target.value
@@ -62,6 +66,7 @@ export default class App extends Component {
   }
   onBankNameChange(event) {
     this.setState({
+      fieldError: { ...this.state.fieldError, banknameError: "" },
       user: {
         ...this.state.user,
         bankname: event.target.value
@@ -71,6 +76,7 @@ export default class App extends Component {
   }
   onCardNumberChange(event) {
     this.setState({
+      fieldError: { ...this.state.fieldError, cardnumberError: "" },
       user: {
         ...this.state.user,
         cardnumber: event.target.value
@@ -113,17 +119,56 @@ export default class App extends Component {
     deleteUsers(userid);
     window.location.reload(true);
   }
-  handlerOnSubmit(newusersdetails) {
-    console.log(newusersdetails);
+  validate = () => {
+    let nameError = "";
+    let contectError = "";
+    let banknameError = "";
+    let cardnumberError = "";
+    !this.state.user.name ? (nameError = "Name Required!") : (nameError = "");
+    !this.state.user.contect
+      ? (contectError = "Contect Number Required!")
+      : (contectError = "");
+    !this.state.user.bankname
+      ? (banknameError = "Bank Name Required!")
+      : (banknameError = "");
+
+    if (this.state.user.contect && this.state.user.contect.length !== 10) {
+      contectError = "Invalid!Length must be 10.";
+    }
+    !this.state.user.cardnumber
+      ? (cardnumberError = "Card Number Required!")
+      : (cardnumberError = "");
     if (
-      this.state.user.name === "" ||
-      this.state.user.contect === "" ||
-      this.state.user.bankname === "" ||
-      this.state.user.cardnumber === "" ||
-      this.state.user.contect.length !== 10
+      this.state.user.cardnumber &&
+      !this.state.user.cardnumber.match(
+        "[0-9][0-9][0-9][0-9]" +
+          "-" +
+          "[0-9][0-9][0-9][0-9]" +
+          "-" +
+          "[0-9][0-9][0-9][0-9]" +
+          "-" +
+          "[0-9][0-9][0-9][0-9]"
+      )
     ) {
-      alert("Fillup All Details Properly.");
-    } else {
+      cardnumberError = "Invalid!0000-0000-0000-0000";
+    }
+    if (nameError || contectError || banknameError || cardnumberError) {
+      this.setState({
+        fieldError: {
+          ...this.state.fieldError,
+          nameError,
+          contectError,
+          banknameError,
+          cardnumberError
+        }
+      });
+      return false;
+    }
+    return true;
+  };
+  handlerOnSubmit(newusersdetails) {
+    var isValid = this.validate();
+    if (isValid) {
       this.setState(state => ({
         ...state,
         user: newusersdetails,
@@ -140,19 +185,22 @@ export default class App extends Component {
     }
   }
   handlerEditOnSubmit(editusersdetails) {
-    this.setState(state => ({
-      ...state,
-      user: editusersdetails,
-      isEdit: !state.isEdit,
-      isDialogVisible: !state.isDialogVisible,
-      isAdd: false
-    }));
-    editUsers(this.state.user).then(fetchusers =>
-      this.setState({
-        users: fetchusers
-      })
-    );
-    window.location.reload(true);
+    var isEditValid = this.validate();
+    if (isEditValid) {
+      this.setState(state => ({
+        ...state,
+        user: editusersdetails,
+        isEdit: !state.isEdit,
+        isDialogVisible: !state.isDialogVisible,
+        isAdd: false
+      }));
+      editUsers(this.state.user).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+      window.location.reload(true);
+    }
   }
   onClose() {
     this.setState({
@@ -197,6 +245,7 @@ export default class App extends Component {
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
+            errors={this.state.fieldError}
             onNameChange={this.onNameChange.bind(this)}
             onContectChange={this.onContectChange.bind(this)}
             onBankNameChange={this.onBankNameChange.bind(this)}
@@ -216,10 +265,6 @@ export default class App extends Component {
             onCloseClick={this.onClose.bind(this)}
           />
         )}
-        {/* {this.setState({
-          isEdit: !this.state.isEdit,
-          isAdd: !this.state.isAdd
-        })} */}
         <br></br>
         <hr />
         <UserTable
