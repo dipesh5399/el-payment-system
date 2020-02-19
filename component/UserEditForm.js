@@ -7,49 +7,65 @@ const UserEditForm = props => {
         <table>
           <tr class="form-group">
             <td>
-              <label>Name :</label>
+              <label>Name </label>
             </td>
             <td>
-              <input value={props.nameKey.name} onChange={props.onNameChange} />
+              :{" "}
+              <input
+                value={props.nameKey.name}
+                onChange={props.onNameChange}
+                style={{ borderRadius: "5px" }}
+              />
             </td>
           </tr>
           <tr class="form-group">
             <td>
-              <label>Contact No. :</label>
+              <label>Contact No. </label>
             </td>
             <td>
-              {" "}
+              :{" "}
               <input
                 type="text"
                 class="form-control"
                 value={props.nameKey.contect}
                 onChange={props.onContectChange}
+                style={{ borderRadius: "5px" }}
               />
             </td>
           </tr>
           <tr class="form-group">
             <td>
-              <label>Name Of Bank :</label>
+              <label>Name Of Bank </label>
             </td>
             <td>
-              <input
-                type="text"
-                class="form-control"
+              :{" "}
+              <select
                 value={props.nameKey.bankname}
                 onChange={props.onBankNameChange}
-              />
+                style={{ borderRadius: "5px" }}
+              >
+                <option>ADC</option>
+                <option>BOI</option>
+                <option>HDFC</option> <option>IndusInd Bank</option>
+                <option>Maharastra Bank</option>
+                <option>Panjab Bank</option>
+                <option>SBI</option>
+                <option>Union</option>
+              </select>
             </td>
           </tr>
           <tr class="form-group">
             <td>
-              <label>Card Number :</label>
+              <label>Card Number </label>
             </td>
             <td>
+              :{" "}
               <input
                 type="text"
                 class="form-control"
                 value={props.nameKey.cardnumber}
                 onChange={props.onCardNumberChange}
+                style={{ borderRadius: "5px" }}
               />
             </td>
           </tr>

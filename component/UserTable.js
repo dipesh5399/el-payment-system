@@ -11,26 +11,19 @@ const UserTable = props => {
     <table align="center" id="displaystyle" width="100%">
       <tr>
         <td>Sr. No.</td>
-        <td>
-          NAME
-          <tr>
-            {" "}
-            <img
-              src={sortup}
-              alt="sort by accending"
-              style={{ height: "13px", width: "13px" }}
-              onClick={() => props.onSortingClick("name", "asc")}
-            ></img>
-          </tr>
-          <tr>
-            <img
-              src={sortdown}
-              alt="sort by descending"
-              style={{ height: "12px", width: "12px" }}
-              onClick={() => props.onSortingClick("name", "desc")}
-            ></img>
-          </tr>
-        </td>
+        NAME
+        <img
+          src={sortup}
+          alt="sort by accending"
+          style={{ height: "13px", width: "13px" }}
+          onClick={() => props.onSortingClick("name", "asc")}
+        ></img>
+        <img
+          src={sortdown}
+          alt="sort by descending"
+          style={{ height: "12px", width: "12px" }}
+          onClick={() => props.onSortingClick("name", "desc")}
+        ></img>
         <td>
           CONTECT NO.
           <img
@@ -79,7 +72,7 @@ const UserTable = props => {
                 style={{
                   backgroundColor: "green",
                   color: "white",
-                  borderRadius: "6px"
+                  borderRadius: "10px"
                 }}
               >
                 Edit
@@ -89,7 +82,7 @@ const UserTable = props => {
                 style={{
                   backgroundColor: "red",
                   color: "white",
-                  borderRadius: "6px"
+                  borderRadius: "10px"
                 }}
               >
                 Delete
