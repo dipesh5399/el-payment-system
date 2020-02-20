@@ -1,11 +1,19 @@
 import React from "react";
 import sortup from "./sorting-up.png";
 import sortdown from "./sorting-down.png";
+
 const UserTable = props => {
   var count = 0;
-  var totalitems = props.user.length;
-  var totalpage = totalitems / 2;
-  console.log(totalpage);
+  // var pageItems = [...props.user].map(i => ({
+  //   name: i.name,
+  //   contect: i.contect,
+  //   bankname: i.bankname,
+  //   cardnumber: i.cardnumber
+  // }));
+  // var totalitems = props.user.length;
+  // var totalpage = totalitems / 2;
+  // console.log(totalpage);
+  // console.log(pageItems);
 
   return (
     <table align="center" id="displaystyle" width="100%">

@@ -13,6 +13,8 @@ const UserAddForm = props => {
             :{" "}
             <input
               type="text"
+              pattern="[A-Za-z]"
+              title="Only Alphabatical words excepted."
               value={props.nameKey.name}
               onChange={props.onNameChange}
               style={{ borderRadius: "5px" }}
@@ -53,6 +55,8 @@ const UserAddForm = props => {
               value={props.nameKey.bankname}
               onChange={props.onBankNameChange}
               style={{ borderRadius: "5px" }}
+              pattern="[A-Za-z]"
+              title="Please Select Bank ."
             >
               <option></option>
               <option>ADC</option>
@@ -74,6 +78,7 @@ const UserAddForm = props => {
             :{" "}
             <input
               type="text"
+              title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
               pattern="[0-9]-[0-9]-[0-9]-[0-9]"
               value={props.nameKey.cardnumber}
               onChange={props.onCardNumberChange}

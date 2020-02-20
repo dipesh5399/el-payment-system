@@ -15,7 +15,8 @@ const UserEditForm = props => {
                 value={props.nameKey.name}
                 onChange={props.onNameChange}
                 style={{ borderRadius: "5px" }}
-              />
+              />{" "}
+              <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
             </td>
           </tr>
           <tr class="form-group">
@@ -30,7 +31,8 @@ const UserEditForm = props => {
                 value={props.nameKey.contect}
                 onChange={props.onContectChange}
                 style={{ borderRadius: "5px" }}
-              />
+              />{" "}
+              <tr style={{ color: "red" }}>{props.errors.contectError}</tr>
             </td>
           </tr>
           <tr class="form-group">
@@ -43,6 +45,8 @@ const UserEditForm = props => {
                 value={props.nameKey.bankname}
                 onChange={props.onBankNameChange}
                 style={{ borderRadius: "5px" }}
+                pattern="[A-Za-z]"
+                title="Please Select Bank ."
               >
                 <option>ADC</option>
                 <option>BOI</option>
@@ -52,7 +56,8 @@ const UserEditForm = props => {
                 <option>SBI</option>
                 <option>Union</option>
               </select>
-            </td>
+              <tr style={{ color: "red" }}>{props.errors.banknameError}</tr>
+            </td>{" "}
           </tr>
           <tr class="form-group">
             <td>
@@ -62,11 +67,13 @@ const UserEditForm = props => {
               :{" "}
               <input
                 type="text"
-                class="form-control"
+                title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
+                pattern="[0-9]-[0-9]-[0-9]-[0-9]"
                 value={props.nameKey.cardnumber}
                 onChange={props.onCardNumberChange}
                 style={{ borderRadius: "5px" }}
               />
+              <tr style={{ color: "red" }}>{props.errors.cardnumberError}</tr>
             </td>
           </tr>
           <tr>
