@@ -5,6 +5,7 @@ import SearchInput from "./component/SearchInput";
 import NewUsers from "./component/NewUsers";
 import UserAddForm from "./component/UserAddForm";
 import UserEditForm from "./component/UserEditForm";
+import Pagination from "./component/Pagination";
 import {
   getUsers,
   deleteUsers,
@@ -19,6 +20,7 @@ export default class App extends Component {
     isEdit: false,
     search: "",
     users: [],
+    totalitems: [],
     user: {
       id: "",
       name: "",
@@ -33,6 +35,16 @@ export default class App extends Component {
       cardnumberError: ""
     }
   };
+
+  handlerOnPageChange(page, limit) {
+    this.setState(() => {
+      getUsers(this.state.search, "", "", page, limit).then(fetchusers =>
+        this.setState({
+          users: fetchusers
+        })
+      );
+    });
+  }
   onSearch(event) {
     this.setState({ search: event.target.value }, () => {
       getUsers(this.state.search).then(fetchusers =>
@@ -97,7 +109,13 @@ export default class App extends Component {
       isAdd: true,
       isDialogVisible: !state.isDialogVisible,
       isEdit: false,
-      user: { id: "", name: "", contect: "", bankname: "", cardnumber: "" }
+      user: { id: "", name: "", contect: "", bankname: "", cardnumber: "" },
+      fieldError: {
+        nameError: "",
+        contectError: "",
+        banknameError: "",
+        cardnumberError: ""
+      }
     }));
     console.log(this.state.isDialogVisible);
   }
@@ -109,7 +127,13 @@ export default class App extends Component {
       user: userobj,
       isEdit: true,
       isDialogVisible: !state.isDialogVisible,
-      isAdd: false
+      isAdd: false,
+      fieldError: {
+        nameError: "",
+        contectError: "",
+        banknameError: "",
+        cardnumberError: ""
+      }
     }));
     console.log(this.state.user);
   }
@@ -170,6 +194,13 @@ export default class App extends Component {
     var isValid = this.validate();
     if (isValid) {
       this.setState(state => ({
+        fieldError: {
+          ...this.state.fieldError,
+          nameError: "",
+          contectError: "",
+          banknameError: "",
+          cardnumberError: ""
+        },
         ...state,
         user: newusersdetails,
         isAdd: true,
@@ -185,9 +216,16 @@ export default class App extends Component {
     }
   }
   handlerEditOnSubmit(editusersdetails) {
-    var isEditValid = this.validate();
-    if (isEditValid) {
+    var isValid = this.validate();
+    if (isValid) {
       this.setState(state => ({
+        fieldError: {
+          ...this.state.fieldError,
+          nameError: "",
+          contectError: "",
+          banknameError: "",
+          cardnumberError: ""
+        },
         ...state,
         user: editusersdetails,
         isEdit: !state.isEdit,
@@ -234,6 +272,15 @@ export default class App extends Component {
   }
 
   render() {
+    var totalItems = this.state.users.length;
+    console.log(totalItems);
+    var pageLimit = totalItems / 2;
+    var rows = [];
+    for (var i = 1; i <= pageLimit; i++) {
+      rows.push(i);
+    }
+    console.log(rows);
+    console.log(pageLimit);
     return (
       <React.Fragment>
         <SearchInput
@@ -262,6 +309,7 @@ export default class App extends Component {
             onBankNameChange={this.onBankNameChange.bind(this)}
             onCardNumberChange={this.onCardNumberChange.bind(this)}
             nameKey={this.state.user}
+            errors={this.state.fieldError}
             onCloseClick={this.onClose.bind(this)}
           />
         )}
@@ -272,6 +320,10 @@ export default class App extends Component {
           onEditUserClick={this.handlerEditUserClick.bind(this)}
           onDeleteUserClick={this.handlerDeleteUserClick.bind(this)}
           onSortingClick={this.handleSorting.bind(this)}
+        />
+        <Pagination
+          items={rows}
+          onPageChange={this.handlerOnPageChange.bind(this)}
         />
       </React.Fragment>
     );

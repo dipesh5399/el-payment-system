@@ -26,13 +26,13 @@ export var editUsers = function(editUserDetails) {
     })
   });
 };
-export var getUsers = function(searchParam, attrib, order) {
+export var getUsers = function(searchParam, attrib, order, page, limit) {
   return fetch(
     searchParam
       ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}`
       : `http://localhost:3005/users?_sort=${
           attrib ? attrib : "name"
-        }&_order=${order}`
+        }&_order=${order}&_page=${page}&_limit=${limit}`
   ).then(response => {
     return response.json();
   });
