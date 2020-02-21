@@ -20,7 +20,7 @@ export default class App extends Component {
     isEdit: false,
     search: "",
     users: [],
-    totalitems: [],
+    totalitems: "",
     user: {
       id: "",
       name: "",
@@ -33,14 +33,16 @@ export default class App extends Component {
       contectError: "",
       banknameError: "",
       cardnumberError: ""
-    }
+    },
+    activePage: 1
   };
 
   handlerOnPageChange(page, limit) {
     this.setState(() => {
       getUsers(this.state.search, "", "", page, limit).then(fetchusers =>
         this.setState({
-          users: fetchusers
+          users: fetchusers,
+          activePage: page
         })
       );
     });
@@ -96,11 +98,16 @@ export default class App extends Component {
     });
   }
   componentDidMount() {
-    getUsers().then(fetchusers =>
-      this.setState({
-        users: fetchusers
-      })
+    getUsers(undefined, undefined, undefined, undefined, undefined, true).then(
+      fetchusers => {
+        console.log(fetchusers);
+        this.setState({
+          users: fetchusers.items,
+          totalItems: fetchusers.total
+        });
+      }
     );
+    console.log(getUsers(), "fdsfdf");
   }
   handlerNewUserButtonClick() {
     console.log("newuserhandlercalled.");
@@ -209,7 +216,8 @@ export default class App extends Component {
       }));
       addUsers(this.state.user).then(fetchusers =>
         this.setState({
-          users: fetchusers
+          users: fetchusers,
+          totalItems: this.state.users
         })
       );
       window.location.reload(true);
@@ -248,44 +256,38 @@ export default class App extends Component {
     });
   }
   handleSorting(attrib, order) {
-    if (attrib === "name") {
-      getUsers(this.state.search, attrib, order).then(fetchusers =>
-        this.setState({
-          users: fetchusers
-        })
-      );
-    }
-    if (attrib === "contect") {
-      getUsers(this.state.search, attrib, order).then(fetchusers =>
-        this.setState({
-          users: fetchusers
-        })
-      );
-    }
-    if (attrib === "bankname") {
-      getUsers(this.state.search, attrib, order).then(fetchusers =>
-        this.setState({
-          users: fetchusers
-        })
-      );
-    }
+    getUsers(this.state.search, attrib, order).then(fetchusers =>
+      this.setState({
+        users: fetchusers
+      })
+    );
   }
 
   render() {
-    var totalItems = this.state.users.length;
-    console.log(totalItems);
-    var pageLimit = totalItems / 2;
+    var pageLimit;
     var rows = [];
-    for (var i = 1; i <= pageLimit; i++) {
-      rows.push(i);
+    console.log(this.state.totalItems);
+    if (this.state.totalItems % 5 === 0) {
+      pageLimit = this.state.totalItems / 5;
+      for (let i = 1; i <= pageLimit; i++) {
+        rows.push(i);
+      }
+    } else {
+      pageLimit = this.state.totalItems / 5 + 1;
+      for (let i = 1; i <= pageLimit; i++) {
+        rows.push(i);
+      }
     }
-    console.log(rows);
-    console.log(pageLimit);
     return (
       <React.Fragment>
         <SearchInput
           searchKey={this.state.search}
           onChange={this.onSearch.bind(this)}
+        />
+        <Pagination
+          items={rows}
+          activePage={this.state.activePage}
+          onPageChange={this.handlerOnPageChange.bind(this)}
         />
         <NewUsers onAddUserClick={this.handlerNewUserButtonClick.bind(this)} />
         <br />
@@ -315,15 +317,12 @@ export default class App extends Component {
         )}
         <br></br>
         <hr />
+
         <UserTable
           user={this.state.users}
           onEditUserClick={this.handlerEditUserClick.bind(this)}
           onDeleteUserClick={this.handlerDeleteUserClick.bind(this)}
           onSortingClick={this.handleSorting.bind(this)}
-        />
-        <Pagination
-          items={rows}
-          onPageChange={this.handlerOnPageChange.bind(this)}
         />
       </React.Fragment>
     );

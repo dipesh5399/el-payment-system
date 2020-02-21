@@ -26,14 +26,32 @@ export var editUsers = function(editUserDetails) {
     })
   });
 };
-export var getUsers = function(searchParam, attrib, order, page, limit) {
+export var getUsers = function(
+  searchParam,
+  attrib,
+  order,
+  page,
+  limit,
+  isGetTotalCount
+) {
   return fetch(
     searchParam
       ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}`
       : `http://localhost:3005/users?_sort=${
           attrib ? attrib : "name"
-        }&_order=${order}&_page=${page}&_limit=${limit}`
+        }&_order=${order}&_page=${page ? page : 1}&_limit=${limit ? limit : 5}`,
+    {
+      headers: { X_Total_Count: getUsers.length }
+    }
   ).then(response => {
+    if (isGetTotalCount) {
+      return response.json().then(items => {
+        return {
+          items,
+          total: response.headers.get("X-Total-Count")
+        };
+      });
+    }
     return response.json();
   });
 };
