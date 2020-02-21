@@ -4,7 +4,12 @@ const UserAddForm = props => {
   return (
     <div align="center">
       <table>
-        {" "}
+        {/* <div>
+          <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
+          <tr style={{ color: "red" }}>{props.errors.contectError}</tr>{" "}
+          <tr style={{ color: "red" }}>{props.errors.banknameError}</tr>
+          <tr style={{ color: "red" }}>{props.errors.cardnumberError}</tr>
+        </div> */}{" "}
         <tr class="form-group">
           <td>
             <label>Name </label>

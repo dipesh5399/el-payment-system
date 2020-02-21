@@ -4,16 +4,6 @@ import sortdown from "./sorting-down.png";
 
 const UserTable = props => {
   var count = 0;
-  // var pageItems = [...props.user].map(i => ({
-  //   name: i.name,
-  //   contect: i.contect,
-  //   bankname: i.bankname,
-  //   cardnumber: i.cardnumber
-  // }));
-  // var totalitems = props.user.length;
-  // var totalpage = totalitems / 2;
-  // console.log(totalpage);
-  // console.log(pageItems);
 
   return (
     <table align="center" id="displaystyle" width="100%">
@@ -69,12 +59,12 @@ const UserTable = props => {
       {props.user.map((userobj, id) => {
         return (
           <tr key={id}>
-            <td style={{ padding: "10px" }}>{++count}</td>
-            <td>{userobj.name}</td>
-            <td>{userobj.contect}</td>
-            <td>{userobj.bankname}</td>
-            <td>{userobj.cardnumber}</td>
-            <td>
+            <td style={{ padding: "10px", width: "5%" }}>{++count}</td>
+            <td style={{ width: "25%" }}>{userobj.name}</td>
+            <td style={{ width: "20%" }}>{userobj.contect}</td>
+            <td style={{ width: "20%" }}>{userobj.bankname}</td>
+            <td style={{ width: "20%" }}>{userobj.cardnumber}</td>
+            <td style={{ width: "10%" }}>
               <button
                 onClick={() => props.onEditUserClick(userobj)}
                 style={{
