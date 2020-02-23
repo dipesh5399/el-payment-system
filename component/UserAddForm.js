@@ -1,9 +1,9 @@
 import React from "react";
-
+import "../cssfiles/UserAddForm.css";
 const UserAddForm = props => {
   return (
     <div align="center">
-      <table>
+      <table >
         {/* <div>
           <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
           <tr style={{ color: "red" }}>{props.errors.contectError}</tr>{" "}
@@ -19,12 +19,13 @@ const UserAddForm = props => {
             <input
               type="text"
               pattern="[A-Za-z]"
+              name="name"
               title="Only Alphabatical words excepted."
               value={props.nameKey.name}
-              onChange={props.onNameChange}
-              style={{ borderRadius: "5px" }}
+              onChange={props.onChange}
+              id="tdstyle"
             />
-            <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
+            <tr id="tr">{props.errors.nameError}</tr>
           </td>
         </tr>
         <tr class="form-group">
@@ -36,11 +37,12 @@ const UserAddForm = props => {
             <input
               type="number"
               class="form-control"
+              name="contect"
               value={props.nameKey.contect}
-              onChange={props.onContectChange}
-              style={{ borderRadius: "5px" }}
+              onChange={props.onChange}
+              id="tdstyle"
             />{" "}
-            <tr style={{ color: "red" }}>{props.errors.contectError}</tr>
+            <tr id="tr">{props.errors.contectError}</tr>
           </td>
         </tr>
         <tr class="form-group">
@@ -50,16 +52,12 @@ const UserAddForm = props => {
 
           <td>
             :{" "}
-            {/* <input
-              type="text"
-              value={props.nameKey.bankname}
-              onChange={props.onBankNameChange}
-              style={{ borderRadius: "5px" }}
-            /> */}
+            
             <select
               value={props.nameKey.bankname}
-              onChange={props.onBankNameChange}
-              style={{ borderRadius: "5px" }}
+              onChange={props.onChange}
+              id="tdstyle"
+              name="bankname"
               pattern="[A-Za-z]"
               title="Please Select Bank ."
             >
@@ -72,7 +70,7 @@ const UserAddForm = props => {
               <option>SBI</option>
               <option>Union</option>
             </select>
-            <tr style={{ color: "red" }}>{props.errors.banknameError}</tr>
+            <tr id="tr">{props.errors.banknameError}</tr>
           </td>
         </tr>
         <tr class="form-group">
@@ -85,11 +83,12 @@ const UserAddForm = props => {
               type="text"
               title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
               pattern="[0-9]-[0-9]-[0-9]-[0-9]"
+              name="cardnumber"
+              id="tdstyle"
               value={props.nameKey.cardnumber}
-              onChange={props.onCardNumberChange}
-              style={{ borderRadius: "5px" }}
+              onChange={props.onChange}
             />
-            <tr style={{ color: "red" }}>{props.errors.cardnumberError}</tr>
+            <tr id="tr">{props.errors.cardnumberError}</tr>
           </td>
         </tr>
         <tr>
