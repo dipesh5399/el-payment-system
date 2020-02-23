@@ -3,15 +3,41 @@
   font-family: Arial;
   border: 3px solid #ddd;
   width: 100%;
+  padding: 10px;
 }
 
 #displaystyle tr:nth-child(even) {
   background-color: #f2f2f2;
+  padding: 10px;
+}
+#displaystyle td {
+  padding: 5px;
+  width: 20%;
 }
 
-#displaystyleheader {
+#header {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
   background-color: #4caf50;
+}
+#sortupimg {
+  height: 13px;
+   width: 13px
+}
+
+#sortdownimg {
+  height: 12px;
+   width: 12px
+}
+
+#editbtn {
+  background-color: green;
+  color: white;
+  border-Radius: 10px
+}
+#deletebtn {
+  background-color: red;
+  color: white;
+  border-Radius: 10px
 }

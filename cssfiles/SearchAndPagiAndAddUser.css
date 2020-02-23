@@ -1,0 +1,19 @@
+#search {
+    height: 30px;
+    width:  150px;
+    position: absolute;
+    left: 20px;
+    border-radius: 12px
+}
+
+#pagination {
+    height: 30px;
+    width: 150px;
+    position: absolute;
+    border-radius: 10px;
+    right: 200px;
+    color: white
+}
+#selectrange {
+    border-radius: 5px; width: 50px
+}
