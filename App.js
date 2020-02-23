@@ -1,16 +1,11 @@
 import React, { Component } from "react";
-import "./cssfiles/userTable.css";
 import UserTable from "./component/UserTable";
-import SearchInput from "./component/SearchInput";
-import NewUsers from "./component/NewUsers";
+import SearchInput from "./component/SearchAndPagiAndAddUser";
 import UserAddForm from "./component/UserAddForm";
-import UserEditForm from "./component/UserEditForm";
-import Pagination from "./component/Pagination";
 import {
   getUsers,
   deleteUsers,
   addUsers,
-  editUsers
 } from "./ApiServiceProvider";
 
 export default class App extends Component {
@@ -21,8 +16,7 @@ export default class App extends Component {
     search: "",
     users: [],
     totalitems: "",
-    user: {
-      id: "",
+    user: {   
       name: "",
       contect: "",
       bankname: "",
@@ -34,7 +28,8 @@ export default class App extends Component {
       banknameError: "",
       cardnumberError: ""
     },
-    activePage: 1
+    activePage: 1,
+    pageLimit: 5
   };
 
   handlerOnPageChange(page, limit) {
@@ -56,61 +51,29 @@ export default class App extends Component {
       );
     });
   }
-
-  onNameChange(event) {
+  onUserDetailChange(event) {
     this.setState({
-      fieldError: { ...this.state.fieldError, nameError: "" },
+      fieldError: { ...this.state.fieldError, nameError: "" ,
+      contectError: "",
+      banknameError: "",
+      cardnumberError: ""},
       user: {
-        ...this.state.user,
-        name: event.target.value
-      }
-    });
-    console.log(this.state.user);
-  }
-
-  onContectChange(event) {
-    this.setState({
-      fieldError: { ...this.state.fieldError, contectError: "" },
-      user: {
-        ...this.state.user,
-        contect: event.target.value
-      }
-    });
-    console.log(this.state.user);
-  }
-  onBankNameChange(event) {
-    this.setState({
-      fieldError: { ...this.state.fieldError, banknameError: "" },
-      user: {
-        ...this.state.user,
-        bankname: event.target.value
-      }
-    });
-    console.log(this.state.user);
-  }
-  onCardNumberChange(event) {
-    this.setState({
-      fieldError: { ...this.state.fieldError, cardnumberError: "" },
-      user: {
-        ...this.state.user,
-        cardnumber: event.target.value
-      }
+              ...this.state.user,
+              [event.target.name]: event.target.value
+            }  
     });
   }
   componentDidMount() {
     getUsers(undefined, undefined, undefined, undefined, undefined, true).then(
       fetchusers => {
-        console.log(fetchusers);
         this.setState({
           users: fetchusers.items,
           totalItems: fetchusers.total
         });
       }
     );
-    console.log(getUsers(), "fdsfdf");
   }
   handlerNewUserButtonClick() {
-    console.log("newuserhandlercalled.");
     this.setState(state => ({
       ...state,
       isAdd: true,
@@ -124,11 +87,8 @@ export default class App extends Component {
         cardnumberError: ""
       }
     }));
-    console.log(this.state.isDialogVisible);
   }
-
   handlerEditUserClick(userobj) {
-    console.log(userobj);
     this.setState(state => ({
       ...state,
       user: userobj,
@@ -142,11 +102,8 @@ export default class App extends Component {
         cardnumberError: ""
       }
     }));
-    console.log(this.state.user);
   }
   handlerDeleteUserClick(userid) {
-    console.log("delete button clicked");
-    console.log(userid);
     deleteUsers(userid);
     window.location.reload(true);
   }
@@ -210,42 +167,15 @@ export default class App extends Component {
         },
         ...state,
         user: newusersdetails,
-        isAdd: true,
+        isAdd: !state.isAdd,
         isDialogVisible: !state.isDialogVisible,
-        isEdit: false
-      }));
-      addUsers(this.state.user).then(fetchusers =>
+        isEdit: !state.isEdit
+      }, () => {addUsers(this.state.user,this.state.isEdit).then(fetchusers =>
         this.setState({
           users: fetchusers,
           totalItems: this.state.users
         })
-      );
-      window.location.reload(true);
-    }
-  }
-  handlerEditOnSubmit(editusersdetails) {
-    var isValid = this.validate();
-    if (isValid) {
-      this.setState(state => ({
-        fieldError: {
-          ...this.state.fieldError,
-          nameError: "",
-          contectError: "",
-          banknameError: "",
-          cardnumberError: ""
-        },
-        ...state,
-        user: editusersdetails,
-        isEdit: !state.isEdit,
-        isDialogVisible: !state.isDialogVisible,
-        isAdd: false
-      }));
-      editUsers(this.state.user).then(fetchusers =>
-        this.setState({
-          users: fetchusers
-        })
-      );
-      window.location.reload(true);
+      )}));     
     }
   }
   onClose() {
@@ -262,62 +192,43 @@ export default class App extends Component {
       })
     );
   }
-
   render() {
     var pageLimit;
     var rows = [];
-    console.log(this.state.totalItems);
-    if (this.state.totalItems % 5 === 0) {
-      pageLimit = this.state.totalItems / 5;
-      for (let i = 1; i <= pageLimit; i++) {
-        rows.push(i);
-      }
-    } else {
-      pageLimit = this.state.totalItems / 5 + 1;
-      for (let i = 1; i <= pageLimit; i++) {
-        rows.push(i);
-      }
+    this.state.totalItems % this.state.pageLimit === 0 ?      pageLimit = this.state.totalItems / this.state.pageLimit    :      pageLimit = this.state.totalItems / this.state.pageLimit + 1;    
+    for (let i = 1; i <= pageLimit; i++) {
+      rows.push(i);
     }
     return (
       <React.Fragment>
         <SearchInput
+        items={rows}       
           searchKey={this.state.search}
-          onChange={this.onSearch.bind(this)}
-        />
-        <Pagination
-          items={rows}
           activePage={this.state.activePage}
+          onChange={this.onSearch.bind(this)}
+          onAddUserClick={this.handlerNewUserButtonClick.bind(this)}
           onPageChange={this.handlerOnPageChange.bind(this)}
         />
-        <NewUsers onAddUserClick={this.handlerNewUserButtonClick.bind(this)} />
         <br />
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
             errors={this.state.fieldError}
-            onNameChange={this.onNameChange.bind(this)}
-            onContectChange={this.onContectChange.bind(this)}
-            onBankNameChange={this.onBankNameChange.bind(this)}
-            onCardNumberChange={this.onCardNumberChange.bind(this)}
+            onChange={this.onUserDetailChange.bind(this)}
             onClick={this.handlerOnSubmit.bind(this)}
             onCloseClick={this.onClose.bind(this)}
           />
         )}
         {this.state.isEdit && (
-          <UserEditForm
-            onNameChange={this.onNameChange.bind(this)}
-            onClick={this.handlerEditOnSubmit.bind(this)}
-            onContectChange={this.onContectChange.bind(this)}
-            onBankNameChange={this.onBankNameChange.bind(this)}
-            onCardNumberChange={this.onCardNumberChange.bind(this)}
-            nameKey={this.state.user}
-            errors={this.state.fieldError}
+          <UserAddForm
+          nameKey={this.state.user}
+          errors={this.state.fieldError}
+            onChange={this.onUserDetailChange.bind(this)}
+            onClick={this.handlerOnSubmit.bind(this)}
             onCloseClick={this.onClose.bind(this)}
           />
-        )}
-        <br></br>
+        )} <br></br>       
         <hr />
-
         <UserTable
           user={this.state.users}
           onEditUserClick={this.handlerEditUserClick.bind(this)}

@@ -1,6 +1,6 @@
-export var addUsers = function(addUserDetails) {
-  return fetch("http://localhost:3005/users", {
-    method: "POST",
+export var addUsers = function(addUserDetails,isEdit) {
+  return fetch(`http://localhost:3005/users/${addUserDetails.id}`, {
+    method: isEdit ? "PATCH" : "POST",
     headers: {
       "Content-Type": "application/json"
     },
@@ -12,20 +12,7 @@ export var addUsers = function(addUserDetails) {
     })
   });
 };
-export var editUsers = function(editUserDetails) {
-  return fetch(`http://localhost:3005/users/${editUserDetails.id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      name: editUserDetails.name,
-      contect: editUserDetails.contect,
-      bankname: editUserDetails.bankname,
-      cardnumber: editUserDetails.cardnumber
-    })
-  });
-};
+
 export var getUsers = function(
   searchParam,
   attrib,
