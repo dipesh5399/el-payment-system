@@ -1,59 +1,84 @@
 import React from "react";
+import Search from "../images/Search.png";
+import cancle from "../images/cancle.png";
 import "../cssfiles/SearchAndPagiAndAddUser.css";
 const SearchInput = props => {
   var pagenumber = 0;
-
   return (
     <React.Fragment>
-      {/* input field for search */}
-      <input
-        placeholder="search"
-        type="text"
-        value={props.searchKey}
-        onChange={props.onChange}
-        id="search"
-      ></input>
-  {/* button for add new user */ }
-      <button
-      onClick={props.onAddUserClick}
-      style={{
-        height: "30px",
-        witdh: "150px",
-        position: "absolute",
-        borderRadius: "10px",
-        right: "20px",
-        backgroundColor: "blue",
-        color: "white"
-      }}
-    >
-      Add New User
-    </button>
-    {/* set page and page limit */}
-    <div
-      align="center"
-      id="pagination"
-    >
-      {" "}
-      <select id="selectrange">
-        <option>5</option>
-        <option>10</option>
-        <option>20</option>
-        <option>50</option>
-      </select>
-      {props.items.map((i = 0) => {
-        return (
-          <button
-            key={i}
-            onClick={() => props.onPageChange(i, 5)}
-            style={{
-              backgroundColor: `${props.activePage === i ? "aqua" : ""}`
-            }}
-          >
-            {++pagenumber}
-          </button>
-        );
-      })}
-    </div>
+      {/* input field for search */}{" "}
+      <div id="searchArea">
+        <span>
+          <img
+            src={Search}
+            alt="Search"
+            height="20px"
+            width="20px"
+            style={{ paddingTop: "5px", marginLeft: "10px" }}
+          ></img>
+        </span>
+        {"  "}
+        <span>
+          {" "}
+          <input
+            placeholder="Search"
+            type="text"
+            value={props.searchKey}
+            onChange={props.onChange}
+            name="search"
+            id="search"
+            style={{ marginLeft: "10px" }}
+          ></input>
+        </span>
+        {console.log(props.limit)}
+        <span>
+          <img
+            src={cancle}
+            alt="Clear search"
+            height="20px"
+            width="20px"
+            onClick={props.onClear}
+            style={{ paddingTop: "5px", marginLeft: "150px" }}
+          ></img>
+        </span>
+      </div>
+      {/* button for add new user */}
+      <button onClick={props.onAddUserClick} id="addbtn">
+        Request New Card
+      </button>
+      {/* set page and page limit */}
+      <div align="center" id="pagination">
+        {" "}
+        <select
+          id="selectrange"
+          name="pageLimit"
+          value={props.limit}
+          onChange={props.onChange}
+        >
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+          <option>50</option>
+        </select>
+        {props.items.map((i = 0) => {
+          return (
+            console.log(props.limit),
+            (
+              <button
+                key={i}
+                onClick={() => props.onPageChange(i, props.limit)}
+                style={{
+                  backgroundColor: `${
+                    props.activePage === i ? " rgb(224, 222, 243)" : ""
+                  }`
+                }}
+              >
+                {++pagenumber}
+              </button>
+            )
+          );
+        })}
+      </div>
     </React.Fragment>
   );
 };

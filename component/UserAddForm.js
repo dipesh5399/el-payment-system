@@ -3,7 +3,7 @@ import "../cssfiles/UserAddForm.css";
 const UserAddForm = props => {
   return (
     <div align="center">
-      <table >
+      <table>
         {/* <div>
           <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
           <tr style={{ color: "red" }}>{props.errors.contectError}</tr>{" "}
@@ -52,7 +52,6 @@ const UserAddForm = props => {
 
           <td>
             :{" "}
-            
             <select
               value={props.nameKey.bankname}
               onChange={props.onChange}
@@ -64,11 +63,11 @@ const UserAddForm = props => {
               <option></option>
               <option>ADC</option>
               <option>BOI</option>
-              <option>HDFC</option> <option>IndusInd Bank</option>{" "}
+              <option>HDFC</option> <option>IndusLand Bank</option>{" "}
               <option>Maharastra Bank</option>
-              <option>Panjab Bank</option>
+              <option>Punjab Bank</option>
               <option>SBI</option>
-              <option>Union</option>
+              <option>UBI</option>
             </select>
             <tr id="tr">{props.errors.banknameError}</tr>
           </td>

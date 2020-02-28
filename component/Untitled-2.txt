@@ -1,64 +1,106 @@
-- Always use dumb component for component which dont use state or life cycle method.
-- always use css class for style
-- use <React.Fragment> for multiple children only
-- use self closing element which dont have children.
-- components
-	- dumb component (stateless, functional)
-- containers 
-	- smart component (state, lifecycle)
-- controlled vs uncontrolled input
+import React from "react";
+import "../cssfiles/UserAddForm.css";
+const UserAddForm = props => {
+  return (
+    <div align="center">
+      <table >
+        {/* <div>
+          <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
+          <tr style={{ color: "red" }}>{props.errors.contectError}</tr>{" "}
+          <tr style={{ color: "red" }}>{props.errors.banknameError}</tr>
+          <tr style={{ color: "red" }}>{props.errors.cardnumberError}</tr>
+        </div> */}{" "}
+        <tr class="form-group">
+          <td>
+            <label>Name </label>
+          </td>
+          <td>
+            :{" "}
+            <input
+              type="text"
+              pattern="[A-Za-z]"
+              name="name"
+              title="Only Alphabatical words excepted."
+              value={props.nameKey.name}
+              onChange={props.onChange}
+              id="tdstyle"
+            />
+            <tr id="tr">{props.errors.nameError}</tr>
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Contact No. </label>
+          </td>
+          <td>
+            :{" "}
+            <input
+              type="number"
+              class="form-control"
+              name="contect"
+              value={props.nameKey.contect}
+              onChange={props.onChange}
+              id="tdstyle"
+            />{" "}
+            <tr id="tr">{props.errors.contectError}</tr>
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Name Of Bank </label>
+          </td>
 
-<App
-	state: 
-        isDialogVisible: bool
-        isAdd: bool
-        users: []
-        searchKey: ''
-        user: {}
-<SearchBox searchKey onChange />
-<AddUserButton onClick /> => {isDialogVisible: true, isAdd: true, user: {}}
-{isDialogVisible && <UserAddEditForm isAdd user />}
-<UserList 
-    users 
-    onEditClick={isDialogVisible: true, isAdd: false, user: user}
-    onDeleteClick={user} />
-
-CREATE
-fetch('http://localhost:3005/users', {method: 'POST',  headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    }, body: JSON.stringify({
-    "name": "Sumit",
-  })});
-EDIT
-fetch('http://localhost:3005/users/1', {method: 'PATCH',  headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    }, body: JSON.stringify({
-    "name": "Sumit",
-  })});
-DELETE
-fetch('http://localhost:3005/users/1', {method: 'DELETE'});
-
-
-<form>
-  <div class="form-group">
-    <label>Email address</label>
-    <input type="text" class="form-control" value={this.props.name} onChange={} />
-  </div>
-  <div class="form-group">
-    <label>Email address</label>
-    <input type="text" class="form-control" value={this.props.name} onChange={} />
-  </div>
-  <div class="form-group">
-    <label>Email address</label>
-    <input type="text" class="form-control" value={this.props.name} onChange={} />
-  </div>
-  <div class="form-group">
-    <label>Email address</label>
-    <input type="text" class="form-control" value={this.props.name} onChange={} />
-  </div>
-</form>
-
-
-		
+          <td>
+            :{" "}
+            
+            <select
+              value={props.nameKey.bankname}
+              onChange={props.onChange}
+              id="tdstyle"
+              name="bankname"
+              pattern="[A-Za-z]"
+              title="Please Select Bank ."
+            >
+              <option></option>
+              <option>ADC</option>
+              <option>BOI</option>
+              <option>HDFC</option> <option>IndusInd Bank</option>{" "}
+              <option>Maharastra Bank</option>
+              <option>Panjab Bank</option>
+              <option>SBI</option>
+              <option>Union</option>
+            </select>
+            <tr id="tr">{props.errors.banknameError}</tr>
+          </td>
+        </tr>
+        <tr class="form-group">
+          <td>
+            <label>Card Number </label>
+          </td>
+          <td>
+            :{" "}
+            <input
+              type="text"
+              title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
+              pattern="[0-9]-[0-9]-[0-9]-[0-9]"
+              name="cardnumber"
+              id="tdstyle"
+              value={props.nameKey.cardnumber}
+              onChange={props.onChange}
+            />
+            <tr id="tr">{props.errors.cardnumberError}</tr>
+          </td>
+        </tr>
+        <tr>
+          <button type="submit" onClick={props.onClick}>
+            Submit
+          </button>
+          <button type="Cancel" onClick={props.onCloseClick}>
+            Cancel
+          </button>
+        </tr>
+      </table>
+    </div>
+  );
+};
+export default UserAddForm;
