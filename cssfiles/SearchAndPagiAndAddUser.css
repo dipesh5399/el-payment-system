@@ -1,19 +1,36 @@
 #search {
-    height: 30px;
-    width:  150px;
-    position: absolute;
-    left: 20px;
-    border-radius: 12px
+  height: 30px;
+  width: 150px;
+  position: absolute;
+  left: 20px;
+  border-style: hidden;
 }
-
+#searchArea {
+  position: relative;
+  max-width: 220px;
+  height: 32px;
+  border-style: groove;
+}
+#addbtn {
+  height: 40px;
+  width: 150px;
+  border-style: solid;
+  border-width: thick;
+  border-style: groove;
+  background-color: snow;
+  color: black;
+  right: 20px;
+  position: absolute;
+}
 #pagination {
-    height: 30px;
-    width: 150px;
-    position: absolute;
-    border-radius: 10px;
-    right: 200px;
-    color: white
+  height: 30px;
+  width: 150px;
+  position: absolute;
+  border-radius: 10px;
+  right: 200px;
+  color: white;
 }
 #selectrange {
-    border-radius: 5px; width: 50px
+  border-radius: 5px;
+  width: 50px;
 }
