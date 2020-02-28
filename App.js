@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import UserTable from "./component/UserTable";
 import SearchInput from "./component/SearchAndPagiAndAddUser";
 import UserAddForm from "./component/UserAddForm";
-import {
-  getUsers,
-  deleteUsers,
-  addUsers,
-} from "./ApiServiceProvider";
+import { getUsers, deleteUsers, addUsers } from "./ApiServiceProvider";
 
 export default class App extends Component {
   state = {
@@ -15,8 +11,8 @@ export default class App extends Component {
     isEdit: false,
     search: "",
     users: [],
-    totalitems: "",
-    user: {   
+    totalItems: "",
+    user: {
       name: "",
       contect: "",
       bankname: "",
@@ -29,49 +25,61 @@ export default class App extends Component {
       cardnumberError: ""
     },
     activePage: 1,
-    pageLimit: 5
+    pageLimit: 5,
+    isdisable: false,
+    sortBy: "name",
+    sortOrder: "asc"
   };
 
   handlerOnPageChange(page, limit) {
-    this.setState(() => {
-      getUsers(this.state.search, "", "", page, limit).then(fetchusers =>
-        this.setState({
-          users: fetchusers,
-          activePage: page
-        })
-      );
-    });
+    this.setState(
+      {
+        ...this.state,
+        activePage: page,
+        pageLimit: limit
+      },
+      () => {
+        this.callback();
+      }
+    );
   }
   onSearch(event) {
-    this.setState({ search: event.target.value }, () => {
-      getUsers(this.state.search).then(fetchusers =>
-        this.setState({
-          users: fetchusers
-        })
-      );
-    });
+    this.setState(
+      { [event.target.name]: event.target.value, activePage: 1 },
+      () => {
+        this.componentDidMount();
+      }
+    );
   }
   onUserDetailChange(event) {
     this.setState({
-      fieldError: { ...this.state.fieldError, nameError: "" ,
-      contectError: "",
-      banknameError: "",
-      cardnumberError: ""},
+      fieldError: {
+        ...this.state.fieldError,
+        nameError: "",
+        contectError: "",
+        banknameError: "",
+        cardnumberError: ""
+      },
       user: {
-              ...this.state.user,
-              [event.target.name]: event.target.value
-            }  
+        ...this.state.user,
+        [event.target.name]: event.target.value
+      }
     });
   }
   componentDidMount() {
-    getUsers(undefined, undefined, undefined, undefined, undefined, true).then(
-      fetchusers => {
-        this.setState({
-          users: fetchusers.items,
-          totalItems: fetchusers.total
-        });
-      }
-    );
+    getUsers(
+      this.state.search,
+      this.state.sortBy,
+      this.state.sortOrder,
+      this.state.activePage,
+      this.state.pageLimit,
+      true
+    ).then(fetchusers => {
+      this.setState({
+        users: fetchusers.items,
+        totalItems: fetchusers.total
+      });
+    });
   }
   handlerNewUserButtonClick() {
     this.setState(state => ({
@@ -170,12 +178,14 @@ export default class App extends Component {
         isAdd: !state.isAdd,
         isDialogVisible: !state.isDialogVisible,
         isEdit: !state.isEdit
-      }, () => {addUsers(this.state.user,this.state.isEdit).then(fetchusers =>
+      }));
+      addUsers(this.state.user, this.state.isEdit).then(fetchusers =>
         this.setState({
           users: fetchusers,
           totalItems: this.state.users
         })
-      )}));     
+      );
+      window.location.reload(true);
     }
   }
   onClose() {
@@ -186,26 +196,54 @@ export default class App extends Component {
     });
   }
   handleSorting(attrib, order) {
-    getUsers(this.state.search, attrib, order).then(fetchusers =>
+    this.setState(
+      {
+        ...this.state,
+        sortBy: attrib,
+        sortOrder: order,
+        activePage: 1
+      },
+      () => {
+        this.callback();
+      }
+    );
+  }
+  callback() {
+    getUsers(
+      this.state.search,
+      this.state.sortBy,
+      this.state.sortOrder,
+      this.state.activePage,
+      this.state.pageLimit
+    ).then(fetchusers =>
       this.setState({
         users: fetchusers
       })
     );
   }
+  handlerClear() {
+    this.setState({ ...this.state, search: "" }, () => {
+      this.componentDidMount();
+    });
+  }
   render() {
-    var pageLimit;
+    var totalPage;
     var rows = [];
-    this.state.totalItems % this.state.pageLimit === 0 ?      pageLimit = this.state.totalItems / this.state.pageLimit    :      pageLimit = this.state.totalItems / this.state.pageLimit + 1;    
-    for (let i = 1; i <= pageLimit; i++) {
+    this.state.totalItems % this.state.pageLimit === 0
+      ? (totalPage = this.state.totalItems / this.state.pageLimit)
+      : (totalPage = this.state.totalItems / this.state.pageLimit + 1);
+    for (let i = 1; i <= totalPage; i++) {
       rows.push(i);
     }
     return (
       <React.Fragment>
         <SearchInput
-        items={rows}       
+          items={rows}
+          limit={this.state.pageLimit}
           searchKey={this.state.search}
           activePage={this.state.activePage}
           onChange={this.onSearch.bind(this)}
+          onClear={this.handlerClear.bind(this)}
           onAddUserClick={this.handlerNewUserButtonClick.bind(this)}
           onPageChange={this.handlerOnPageChange.bind(this)}
         />
@@ -221,16 +259,18 @@ export default class App extends Component {
         )}
         {this.state.isEdit && (
           <UserAddForm
-          nameKey={this.state.user}
-          errors={this.state.fieldError}
+            nameKey={this.state.user}
+            errors={this.state.fieldError}
             onChange={this.onUserDetailChange.bind(this)}
             onClick={this.handlerOnSubmit.bind(this)}
             onCloseClick={this.onClose.bind(this)}
           />
-        )} <br></br>       
+        )}{" "}
+        <br />
         <hr />
         <UserTable
           user={this.state.users}
+          isdisable={this.state.isdisable}
           onEditUserClick={this.handlerEditUserClick.bind(this)}
           onDeleteUserClick={this.handlerDeleteUserClick.bind(this)}
           onSortingClick={this.handleSorting.bind(this)}
@@ -239,10 +279,3 @@ export default class App extends Component {
     );
   }
 }
-// let filteredlist = db.users.name.filter(userfiltered => {
-//   return (
-//     userfiltered.name
-//       .toLowerCase()
-//       .indexOf(this.state.search.toLowerCase()) !== -1
-//   );
-// });

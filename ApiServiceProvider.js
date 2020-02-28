@@ -1,4 +1,4 @@
-export var addUsers = function(addUserDetails,isEdit) {
+export var addUsers = function(addUserDetails, isEdit) {
   return fetch(`http://localhost:3005/users/${addUserDetails.id}`, {
     method: isEdit ? "PATCH" : "POST",
     headers: {
@@ -23,7 +23,9 @@ export var getUsers = function(
 ) {
   return fetch(
     searchParam
-      ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}`
+      ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}&_page=${
+          page ? page : 1
+        }&_limit=${limit ? limit : 5}`
       : `http://localhost:3005/users?_sort=${
           attrib ? attrib : "name"
         }&_order=${order}&_page=${page ? page : 1}&_limit=${limit ? limit : 5}`,
