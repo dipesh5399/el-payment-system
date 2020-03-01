@@ -3,7 +3,6 @@ import UserTable from "./component/UserTable";
 import SearchInput from "./component/SearchAndPagiAndAddUser";
 import UserAddForm from "./component/UserAddForm";
 import { getUsers, deleteUsers, addUsers } from "./ApiServiceProvider";
-
 export default class App extends Component {
   state = {
     isDialogVisible: false,
@@ -248,6 +247,7 @@ export default class App extends Component {
           onPageChange={this.handlerOnPageChange.bind(this)}
         />
         <br />
+        
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
