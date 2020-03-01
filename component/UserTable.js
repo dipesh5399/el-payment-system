@@ -4,6 +4,7 @@ import sortdown from "../images/sorting-down.png";
 import edit from "../images/useredit.jpg";
 import userdelete from "../images/delete.png";
 import "../cssfiles/userTable.css";
+import * as Bootstrap from "react-bootstrap";
 
 const UserTable = props => {
   var count = 0;
@@ -12,10 +13,12 @@ const UserTable = props => {
       <h4>No Data Available.</h4>
     </div>
   ) : (
-    <table align="center" id="displaystyle">
+    <Bootstrap.Table responsive  align="center" id="tableStyle" >
+      
+        <thead>
       <tr id="header">
-        <td>Sr. No.</td>
-        <td>
+        <th>Sr. No.</th>
+        <th>
           {" "}
           NAME
           {"    "}
@@ -31,8 +34,8 @@ const UserTable = props => {
             id="sortdownimg"
             onClick={() => props.onSortingClick("name", "desc")}
           ></img>
-        </td>
-        <td>
+        </th>
+        <th>
           CONTECT NO.
           {"    "}
           <img
@@ -47,8 +50,8 @@ const UserTable = props => {
             id="sortdownimg"
             onClick={() => props.onSortingClick("contect", "desc")}
           ></img>
-        </td>
-        <td>
+        </th>
+        <th>
           NAME OF BANK
           {"    "}
           <img
@@ -63,15 +66,16 @@ const UserTable = props => {
             id="sortdownimg"
             onClick={() => props.onSortingClick("bankname", "desc")}
           ></img>
-        </td>
-        <td>CARD NUMBER</td>
-        <td>Payment</td>
-        <td>Profile</td>
+        </th>
+        <th>CARD NUMBER</th>
+        <th>Payment</th>
+        <th>Profile</th>
       </tr>
-
+      </thead>
+      <tbody id="displaystyle" >
       {props.user.map((userobj, id) => {
         return (
-          <tr key={id}>
+          <tr key={id} style={{borderTop: "1px solid" ,borderColor:"rgb(174, 172, 213)"}}>
             <td>{++count}</td>
             <td>{userobj.name}</td>
             <td>{userobj.contect}</td>
@@ -100,8 +104,8 @@ const UserTable = props => {
           </tr>
         );
       })}
-      <tr></tr>
-    </table>
+      </tbody>
+    </Bootstrap.Table>
   );
 };
 export default UserTable;

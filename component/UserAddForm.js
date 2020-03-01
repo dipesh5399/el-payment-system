@@ -1,21 +1,22 @@
 import React from "react";
 import "../cssfiles/UserAddForm.css";
+import Modal from "react-modal";
+import { Alert } from "react-bootstrap";
 const UserAddForm = props => {
   return (
-    <div align="center">
-      <table>
-        {/* <div>
-          <tr style={{ color: "red" }}>{props.errors.nameError}</tr>
-          <tr style={{ color: "red" }}>{props.errors.contectError}</tr>{" "}
-          <tr style={{ color: "red" }}>{props.errors.banknameError}</tr>
-          <tr style={{ color: "red" }}>{props.errors.cardnumberError}</tr>
-        </div> */}{" "}
-        <tr class="form-group">
-          <td>
-            <label>Name </label>
-          </td>
-          <td>
-            :{" "}
+       
+    <Modal isOpen={true} shouldCloseOnEsc={false} shouldCloseOnOverlayClick={false} id="modaldisplay"  >    
+      <div align="center" >
+      <Alert variant="danger"><table>      
+      <tr>
+     <tr> {props.errors.nameError}</tr><tr>{props.errors.contectError}</tr>
+     <tr> {props.errors.cardnumberError}</tr>
+      <tr> {props.errors.banknameError}</tr></tr>
+          </table>
+          </Alert>
+          <table>
+            <label>Name </label>        
+            <tr >  
             <input
               type="text"
               pattern="[A-Za-z]"
@@ -25,15 +26,12 @@ const UserAddForm = props => {
               onChange={props.onChange}
               id="tdstyle"
             />
-            <tr id="tr">{props.errors.nameError}</tr>
-          </td>
+            
         </tr>
-        <tr class="form-group">
-          <td>
+        
+          
             <label>Contact No. </label>
-          </td>
-          <td>
-            :{" "}
+            <tr>
             <input
               type="number"
               class="form-control"
@@ -42,16 +40,13 @@ const UserAddForm = props => {
               onChange={props.onChange}
               id="tdstyle"
             />{" "}
-            <tr id="tr">{props.errors.contectError}</tr>
-          </td>
+            
+    
         </tr>
-        <tr class="form-group">
-          <td>
+     
+          
             <label>Name Of Bank </label>
-          </td>
-
-          <td>
-            :{" "}
+            <tr>
             <select
               value={props.nameKey.bankname}
               onChange={props.onChange}
@@ -69,15 +64,12 @@ const UserAddForm = props => {
               <option>SBI</option>
               <option>UBI</option>
             </select>
-            <tr id="tr">{props.errors.banknameError}</tr>
-          </td>
+           
         </tr>
-        <tr class="form-group">
-          <td>
+        
+          
             <label>Card Number </label>
-          </td>
-          <td>
-            :{" "}
+            <tr>
             <input
               type="text"
               title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
@@ -87,8 +79,7 @@ const UserAddForm = props => {
               value={props.nameKey.cardnumber}
               onChange={props.onChange}
             />
-            <tr id="tr">{props.errors.cardnumberError}</tr>
-          </td>
+            
         </tr>
         <tr>
           <button type="submit" onClick={props.onClick}>
@@ -100,6 +91,9 @@ const UserAddForm = props => {
         </tr>
       </table>
     </div>
+   
+    </Modal>
+
   );
 };
 export default UserAddForm;
