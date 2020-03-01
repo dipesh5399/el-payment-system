@@ -4,3 +4,11 @@
 #tr {
   color: rgb(245, 99, 99);
 }
+
+#modaldisplay {
+  height: 500px;
+  width: 500px;
+  position: relative;
+ margin-left: 25%;
+
+}
