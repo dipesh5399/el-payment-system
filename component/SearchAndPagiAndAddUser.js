@@ -1,6 +1,7 @@
 import React from "react";
 import Search from "../images/Search.png";
 import cancle from "../images/cancle.png";
+import Images from "react-bootstrap/Image";
 import "../cssfiles/SearchAndPagiAndAddUser.css";
 const SearchInput = props => {
   var pagenumber = 0;
@@ -9,13 +10,13 @@ const SearchInput = props => {
       {/* input field for search */}{" "}
       <div id="searchArea">
         <span>
-          <img
+          <Images
             src={Search}
             alt="Search"
-            height="20px"
+            height="30px"
             width="20px"
             style={{ paddingTop: "5px", marginLeft: "10px" }}
-          ></img>
+          ></Images>
         </span>
         {"  "}
         <span>
@@ -35,7 +36,7 @@ const SearchInput = props => {
           <img
             src={cancle}
             alt="Clear search"
-            height="20px"
+            height="25px"
             width="20px"
             onClick={props.onClear}
             style={{ paddingTop: "5px", marginLeft: "150px" }}
