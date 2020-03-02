@@ -8,13 +8,14 @@
 #searchArea {
   position: relative;
   max-width: 220px;
-  height: 32px;
+  height: 40px;
   border-style: groove;
+  border-radius: 5px;
 }
 #addbtn {
   height: 40px;
-  width: 150px;
-  border-style: solid;
+  width: 180px;
+  border-radius: 5px;
   border-width: thick;
   border-style: groove;
   background-color: snow;

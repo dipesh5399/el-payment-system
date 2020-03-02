@@ -1,14 +1,18 @@
 #tdstyle {
   border-radius: 5px;
+  height: 30px;
+  width: 300px;
 }
 #tr {
-  color: rgb(245, 99, 99);
+  color: rgb(224, 99, 99);
 }
 
 #modaldisplay {
-  height: 500px;
+  height: 300px;
   width: 500px;
   position: relative;
- margin-left: 25%;
-
+  background-color: rgb(154, 193, 209);
+}
+#ModalBody {
+  background-color: rgba(245, 245, 245, 0.918);
 }
