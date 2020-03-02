@@ -3,11 +3,13 @@ import UserTable from "./component/UserTable";
 import SearchInput from "./component/SearchAndPagiAndAddUser";
 import UserAddForm from "./component/UserAddForm";
 import { getUsers, deleteUsers, addUsers } from "./ApiServiceProvider";
+
 export default class App extends Component {
   state = {
     isDialogVisible: false,
     isAdd: false,
     isEdit: false,
+    errorDialog: false,
     search: "",
     users: [],
     totalItems: "",
@@ -51,18 +53,21 @@ export default class App extends Component {
     );
   }
   onUserDetailChange(event) {
+    let field = [event.target.name] + "Error";
+    console.log(field);
     this.setState({
+      errorDialog:false,
       fieldError: {
         ...this.state.fieldError,
-        nameError: "",
-        contectError: "",
-        banknameError: "",
-        cardnumberError: ""
+        [field]: ""
       },
       user: {
         ...this.state.user,
         [event.target.name]: event.target.value
       }
+    },
+    () => {
+      this.validate();
     });
   }
   componentDidMount() {
@@ -120,6 +125,10 @@ export default class App extends Component {
     let banknameError = "";
     let cardnumberError = "";
     !this.state.user.name ? (nameError = "Name Required!") : (nameError = "");
+    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]+$")) {
+      nameError = "Invalid Name!";
+    }
+
     !this.state.user.contect
       ? (contectError = "Contect Number Required!")
       : (contectError = "");
@@ -128,7 +137,7 @@ export default class App extends Component {
       : (banknameError = "");
 
     if (this.state.user.contect && this.state.user.contect.length !== 10) {
-      contectError = "Invalid!Length must be 10.";
+      contectError = "Invalid Contact Number!Length must be 10.";
     }
     !this.state.user.cardnumber
       ? (cardnumberError = "Card Number Required!")
@@ -145,10 +154,12 @@ export default class App extends Component {
           "[0-9][0-9][0-9][0-9]"
       )
     ) {
-      cardnumberError = "Invalid!0000-0000-0000-0000";
+      cardnumberError =
+        "Invalid CardNumber! Please Match this format(0000-0000-0000-0000)";
     }
     if (nameError || contectError || banknameError || cardnumberError) {
       this.setState({
+        errorDialog: true,
         fieldError: {
           ...this.state.fieldError,
           nameError,
@@ -191,7 +202,8 @@ export default class App extends Component {
     this.setState({
       isAdd: false,
       isEdit: false,
-      isDialogVisible: false
+      isDialogVisible: false,
+      errorDialog: false
     });
   }
   handleSorting(attrib, order) {
@@ -247,10 +259,11 @@ export default class App extends Component {
           onPageChange={this.handlerOnPageChange.bind(this)}
         />
         <br />
-        
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
+            addform={this.state.isAdd}
+            errordialog={this.state.errorDialog}
             errors={this.state.fieldError}
             onChange={this.onUserDetailChange.bind(this)}
             onClick={this.handlerOnSubmit.bind(this)}
@@ -260,6 +273,8 @@ export default class App extends Component {
         {this.state.isEdit && (
           <UserAddForm
             nameKey={this.state.user}
+            addform={this.state.isAdd}
+            errordialog={this.state.errorDialog}
             errors={this.state.fieldError}
             onChange={this.onUserDetailChange.bind(this)}
             onClick={this.handlerOnSubmit.bind(this)}
