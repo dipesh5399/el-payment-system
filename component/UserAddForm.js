@@ -1,4 +1,5 @@
 import React from "react";
+
 import "../cssfiles/UserAddForm.css";
 
 import { Modal, Alert, Button } from "react-bootstrap";
@@ -17,19 +18,6 @@ const UserAddForm = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body id="ModalBody">
-        {props.errordialog && (
-          <Alert variant="danger" align="center">
-            <table>
-              <tr>
-                <tr> {props.errors.nameError}</tr>
-                <tr>{props.errors.contectError}</tr>
-                <tr> {props.errors.banknameError}</tr>
-                <tr> {props.errors.cardnumberError}</tr>
-              </tr>
-            </table>
-          </Alert>
-        )}
-
         <div align="center">
           <table>
             <tr>
@@ -42,11 +30,10 @@ const UserAddForm = props => {
                 onChange={props.onChange}
                 placeholder="   Name"
                 id="tdstyle"
-                style={{
-                  borderColor:
-                    props.errors.nameError === "" ? "" : "rgb(253, 131, 181)"
-                }}
               />
+              {props.errordialog && (
+                <p style={{ color: "red" }}>{props.errors.nameError}</p>
+              )}
             </tr>
             <br />
             <tr>
@@ -58,8 +45,12 @@ const UserAddForm = props => {
                 onChange={props.onChange}
                 id="tdstyle"
                 placeholder="Contact Number"
-              />{" "}
+                required
+              />
             </tr>
+            {props.errordialog && (
+              <p style={{ color: "red" }}>{props.errors.contectError}</p>
+            )}
             <br />
             <tr>
               <select
@@ -79,6 +70,9 @@ const UserAddForm = props => {
                 <option>UBI</option>
               </select>
             </tr>
+            {props.errordialog && (
+              <p style={{ color: "red" }}>{props.errors.banknameError}</p>
+            )}
             <br />
             <tr>
               <input
@@ -90,8 +84,12 @@ const UserAddForm = props => {
                 placeholder="   Card Number"
                 value={props.nameKey.cardnumber}
                 onChange={props.onChange}
+                required
               />
             </tr>
+            {props.errordialog && (
+              <p style={{ color: "red" }}>{props.errors.cardnumberError}</p>
+            )}
           </table>
         </div>
       </Modal.Body>

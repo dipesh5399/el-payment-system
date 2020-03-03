@@ -1,10 +1,16 @@
 import React from "react";
+
+import Images from "react-bootstrap/Image";
+import Label from "react-bootstrap/FormLabel";
+
+import "../cssfiles/SearchAndPagiAndAddUser.css";
+
 import Search from "../images/Search.png";
 import cancle from "../images/cancle.png";
-import Images from "react-bootstrap/Image";
-import "../cssfiles/SearchAndPagiAndAddUser.css";
+import forward from "../images/forward.png";
+import backward from "../images/backword.png";
+
 const SearchInput = props => {
-  var pagenumber = 0;
   return (
     <React.Fragment>
       {/* input field for search */}{" "}
@@ -29,6 +35,7 @@ const SearchInput = props => {
             name="search"
             id="search"
             style={{ marginLeft: "10px" }}
+            required
           ></input>
         </span>
         {console.log(props.limit)}
@@ -48,6 +55,7 @@ const SearchInput = props => {
         Request New Card
       </button>
       {/* set page and page limit */}
+      {console.log(props.activePage)}
       <div align="center" id="pagination">
         {" "}
         <select
@@ -61,26 +69,48 @@ const SearchInput = props => {
           <option>20</option>
           <option>50</option>
         </select>
-        {props.items.map((i = 0) => {
-          return (
-            console.log(props.limit),
-            (
-              <button
-                key={i}
-                onClick={() => props.onPageChange(i, props.limit)}
-                style={{
-                  backgroundColor: `${
-                    props.activePage === i ? " rgb(224, 222, 243)" : ""
-                  }`
-                }}
-              >
-                {++pagenumber}
-              </button>
-            )
-          );
-        })}
       </div>
+      <div align="center" id="lblpagi">
+        {" "}
+        <Label>
+          {props.activePage} of {props.items.length}
+        </Label>
+      </div>
+      {props.activePage !== 1 && (
+        <Images
+          src={backward}
+          alt="Backword"
+          id="btnbackstyle"
+          onClick={() => props.onPageChange(props.activePage - 1, props.limit)}
+        ></Images>
+      )}
+      {props.activePage < props.items.length && (
+        <Images
+          src={forward}
+          alt="Backword"
+          id="btnforstyle"
+          onClick={() => props.onPageChange(props.activePage + 1, props.limit)}
+        ></Images>
+      )}
     </React.Fragment>
   );
 };
 export default SearchInput;
+// {props.items.map((i = 0) => {
+//   return (
+//     console.log(props.limit),
+//     (
+//       <button
+//         key={i}
+//         onClick={() => props.onPageChange(i, props.limit)}
+//         style={{
+//           backgroundColor: `${
+//             props.activePage === i ? " rgb(224, 222, 243)" : ""
+//           }`
+//         }}
+//       >
+//         {++pagenumber}
+//       </button>
+//     )
+//   );
+// })}
