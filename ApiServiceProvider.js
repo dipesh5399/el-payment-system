@@ -13,22 +13,19 @@ export var addUsers = function(addUserDetails, isEdit) {
   });
 };
 
-export var getUsers = function(
-  searchParam,
-  attrib,
-  order,
-  page,
-  limit,
-  isGetTotalCount
-) {
+export var getUsers = function(Param, isGetTotalCount) {
   return fetch(
-    searchParam
-      ? `http://localhost:3005/users?q=${searchParam}&_sort=${attrib}&_order=${order}&_page=${
-          page ? page : 1
-        }&_limit=${limit ? limit : 5}`
+    Param.search
+      ? `http://localhost:3005/users?q=${Param.search}&_sort=${
+          Param.sortBy
+        }&_order=${Param.sortOrder}&_page=${
+          Param.activePage ? Param.activePage : 1
+        }&_limit=${Param.pageLimit ? Param.pageLimit : 5}`
       : `http://localhost:3005/users?_sort=${
-          attrib ? attrib : "name"
-        }&_order=${order}&_page=${page ? page : 1}&_limit=${limit ? limit : 5}`,
+          Param.sortBy ? Param.sortBy : "name"
+        }&_order=${Param.sortOrder}&_page=${
+          Param.activePage ? Param.activePage : 1
+        }&_limit=${Param.pageLimit ? Param.pageLimit : 5}`,
     {
       headers: { X_Total_Count: getUsers.length }
     }
