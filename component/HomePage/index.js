@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 
-import UserTable from "../UserTable";
-import SearchInput from "../SearchAndPagiAndAddUser";
-import UserAddForm from "../UserAddForm";
+import UserTable from "../UserTable/index";
+import SearchInput from "../SearchAndPagiAndAddUser/index";
+import UserAddForm from "../UserAddForm/index";
+import PaymentMethod from "../PaymentMethod";
+
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import { getUsers, deleteUsers, addUsers } from "../../ApiServiceProvider";
 
 // CardVaultList
@@ -165,11 +169,7 @@ export default class HomePage extends Component {
         isDialogVisible: !state.isDialogVisible,
         isEdit: !state.isEdit,
         fieldError: {
-          ...this.state.fieldError,
-          nameError: "",
-          contectError: "",
-          banknameError: "",
-          cardnumberError: ""
+          ...this.state.fieldError
         },
         ...state,
         user: newusersdetails
@@ -212,6 +212,19 @@ export default class HomePage extends Component {
     this.setState({ ...this.state, search: "" }, () => {
       this.getUserHelper();
     });
+  };
+  handlerPayment = userobj => {
+    return (
+      <React.Fragment>
+        <Router>
+          <Switch>
+            <Route path="/Payment">
+              <PaymentMethod />
+            </Route>
+          </Switch>
+        </Router>
+      </React.Fragment>
+    );
   };
 
   render() {
@@ -266,6 +279,7 @@ export default class HomePage extends Component {
           user={this.state.users}
           isdisable={this.state.isdisable}
           onEditUserClick={this.handlerEditUserClick}
+          onPaymentCall={this.handlerPayment}
           onDeleteUserClick={this.handlerDeleteUserClick}
           onSortingClick={this.handlerSorting}
         />
