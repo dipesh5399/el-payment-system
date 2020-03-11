@@ -21,14 +21,14 @@ const UserAddForm = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div class="table-responsive-sm">
+        <div class="table-responsive-sm was-validated">
           <Table>
             <tr>
               <InputGroup>
                 {" "}
                 <FormControl
                   type="text"
-                  pattern="[A-Za-z]"
+                                 
                   name="name"
                   class="form-control"
                   title="Only Alphabatical words excepted."
@@ -36,7 +36,7 @@ const UserAddForm = props => {
                   onChange={props.onChange}
                   placeholder="   Name"
                   id="tdstyle"
-                />
+                required/>
               </InputGroup>
 
               {props.errordialog && (
@@ -70,7 +70,7 @@ const UserAddForm = props => {
                 name="bankname"
                 title="Please Select Bank ."
                 class="form-control"
-              >
+             required >
                 <option></option>
                 <option>ADC</option>
                 <option>BOI</option>
@@ -89,8 +89,7 @@ const UserAddForm = props => {
               <InputGroup>
                 <FormControl
                   type="text"
-                  title="Invalid!Must be in xxxx-xxxx-xxxx-xxxx form."
-                  pattern="[0-9]-[0-9]-[0-9]-[0-9]"
+                 
                   name="cardnumber"
                   id="tdstyle"
                   placeholder="   Card Number"
