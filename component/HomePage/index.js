@@ -1,11 +1,16 @@
 import React, { Component } from "react";
-
+import { MDBDataTable} from "mdbreact";
 import UserTable from "../UserTable/index";
 import SearchInput from "../SearchAndPagiAndAddUser/index";
 import UserAddForm from "../UserAddForm/index";
-import PaymentMethod from "../PaymentMethod";
+import PaymentMethod from "../PaymentMethod/index";
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 import { getUsers, deleteUsers, addUsers } from "../../ApiServiceProvider";
 
@@ -116,7 +121,7 @@ export default class HomePage extends Component {
     let banknameError = "";
     let cardnumberError = "";
     !this.state.user.name ? (nameError = "Name Required!") : (nameError = "");
-    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]")) {
+    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]*$")) {
       nameError = "Invalid Name!";
     }
     !this.state.user.contect
@@ -216,13 +221,16 @@ export default class HomePage extends Component {
   handlerPayment = userobj => {
     return (
       <React.Fragment>
-        <Router>
-          <Switch>
-            <Route path="/Payment">
-              <PaymentMethod />
-            </Route>
-          </Switch>
-        </Router>
+        <Redirect to="/Payment"></Redirect>
+        <div>
+          <Router>
+            <Switch>
+              <Route exact path="/Payment">
+                <PaymentMethod />
+              </Route>
+            </Switch>
+          </Router>
+        </div>
       </React.Fragment>
     );
   };
@@ -238,7 +246,7 @@ export default class HomePage extends Component {
     }
     return (
       <React.Fragment>
-        <h3 style={{ color: "black" }}>Contact Vault</h3>
+       
         <hr />
         <SearchInput
           items={rows}
@@ -250,7 +258,16 @@ export default class HomePage extends Component {
           onAddUserClick={this.handlerNewUserButtonClick}
           onPageChange={this.handlerPageChange}
         />
-        <br />
+        
+        {/* <MDBDataTable
+              striped
+              bordered
+              small
+              align="center"
+              class="table table-hover table-condensed table-striped table-collapse table-bordered"
+              style={{ tableLayout: "fixed" }}
+              
+            /> */}
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
@@ -272,9 +289,7 @@ export default class HomePage extends Component {
             onClick={this.handlerSubmit}
             onCloseClick={this.handlerClose}
           />
-        )}{" "}
-        <br />
-        <hr />
+        )}
         <UserTable
           user={this.state.users}
           isdisable={this.state.isdisable}
