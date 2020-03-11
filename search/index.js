@@ -1,7 +1,7 @@
 import React from "react";
 
 import * as Bootstrap from "react-bootstrap";
-import * as Icons from "react-bootstrap-icons";
+
 
 import { FormControl } from "react-bootstrap";
 
@@ -11,88 +11,99 @@ const SearchInput = props => {
       <Bootstrap.Container>
         <Bootstrap.Row>
           <Bootstrap.Col xs="3">
-            <Bootstrap.InputGroup>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="btn btn-outline-info">
-                    <Bootstrap.InputGroup.Prepend>
-                      <Icons.Search></Icons.Search>
-                    </Bootstrap.InputGroup.Prepend>
-                  </span>
-                </div>
+          <h3 style={{ color: "black" }}>Contact Vault</h3>
+          </Bootstrap.Col>
+          <Bootstrap.Col></Bootstrap.Col>
+          <Bootstrap.Col xs="15">
+            {" "}
+            <Bootstrap.Button
+              onClick={props.onAddUserClick}
+              size="sm"
+              variant="secondary"
+            >
+              Request New Card
+            </Bootstrap.Button>
+            
+          </Bootstrap.Col>
+        </Bootstrap.Row>
+        <hr/>
+        <Bootstrap.Row>
+          <Bootstrap.Col ><Bootstrap.InputGroup>
+              <div class="input-group mb-3">               
                 <FormControl
-                
                   placeholder="Search"
-                  type="text"
+                  type="search"
                   value={props.searchKey}
                   onChange={props.onChange}
                   name="search"
                   required
                 ></FormControl>
-                <div class="input-group-append">
-                  <span  class="btn btn-outline-info">
-                    <Icons.XCircle 
-                      alt="Clear search"
-                      onClick={props.onClear}
-                    ></Icons.XCircle>
-                  </span>
-                </div>
+                <div class="input-group-append"></div>
               </div>
-            </Bootstrap.InputGroup>
-          </Bootstrap.Col>
-        </Bootstrap.Row>
-        <Bootstrap.Row>
+            </Bootstrap.InputGroup></Bootstrap.Col>
           <Bootstrap.Col></Bootstrap.Col>
-          <Bootstrap.Col></Bootstrap.Col>
-          <Bootstrap.Col xs="4">
-            <div>
-              <span></span>
-              {""}
+          <Bootstrap.Col>
+            <div class="datatables_info">
               <span>
+                Showing:
                 <select
-                  class="badge badge-primary"
+                  class="custom-select custom-select-sm "
+                 style={{width:"40%"}}
                   as="select"
+                  size="sm"
                   name="pageLimit"
-                 
                   value={props.limit}
                   onChange={props.onChange}
                 >
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                  <option>50</option>
-                </select>
-                {props.activePage !== 1 && (
-                  <Bootstrap.Button variant="info" size="sm">
-                    <Icons.ChevronCompactLeft
-                      style={{ display: "initial" }}
+                  <option class="dropdown-item">5</option>
+                  <option class="dropdown-item">10</option>
+                  <option class="dropdown-item">20</option>
+                  <option class="dropdown-item">50</option>
+                </select>{" "}
+              </span>
+              Entries
+            </div>
+          </Bootstrap.Col>
+          <Bootstrap.Col xs="4">
+            {" "}
+            <nav aria-label="...">
+              <ul class="pagination">
+                <Bootstrap.Col xs="3">
+                  {props.activePage !== 1 && (
+                    <li
+                      class="page-item"
                       onClick={() =>
                         props.onPageChange(props.activePage - 1, props.limit)
                       }
-                    ></Icons.ChevronCompactLeft>
-                  </Bootstrap.Button>
-                )}{" "}
-                <Bootstrap.FormLabel
-                  class="btn btn-outline-light"
-                  style={{ display: "initial", color: "black" }}
-                >
-                  {props.activePage} of {props.items.length}
-                </Bootstrap.FormLabel>{" "}
-                {props.activePage < props.items.length && (
-                  <Bootstrap.Button variant="info" size="sm">
-                    <Icons.ChevronCompactRight
-                      style={{ display: "initial" }}
+                    >
+                      <a class="page-link" href="#">
+                        Prev.
+                      </a>
+                    </li>
+                  )}
+                </Bootstrap.Col>
+                <li class="page-item">
+                  <h5 class="form-control ">
+                    {props.activePage} of {props.items.length}
+                  </h5>
+                </li>
+                <Bootstrap.Col xs="3">
+                  {" "}
+                  {props.activePage < props.items.length && (
+                    <li
+                      class="page-item "
                       onClick={() =>
                         props.onPageChange(props.activePage + 1, props.limit)
                       }
-                    ></Icons.ChevronCompactRight>
-                  </Bootstrap.Button>
-                )}{" "}
-                <Bootstrap.Button onClick={props.onAddUserClick} size="sm">
-                  Request New Card
-                </Bootstrap.Button>
-              </span>
-            </div>
+                    >
+                      <a class="page-link" href="#">
+                        Next
+                      </a>
+                    </li>
+                  )}
+                </Bootstrap.Col>
+              </ul>
+            </nav>
           </Bootstrap.Col>
         </Bootstrap.Row>
       </Bootstrap.Container>
