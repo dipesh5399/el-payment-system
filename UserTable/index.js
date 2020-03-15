@@ -1,7 +1,8 @@
 import React from "react";
+import "../UserTable/main.css";
 
-import * as Bootstrap from "react-bootstrap";
 import * as Icons from "react-bootstrap-icons";
+import {Link } from "react-router-dom";
 
 //import { Router } from "react-router-dom";
 const UserTable = props => {
@@ -11,18 +12,15 @@ const UserTable = props => {
       <h4>No Data Available.</h4>
     </div>
   ) : (
-    <div data-spy="scroll" data-offset="0" >
+    <div class="limiter" >
       
-      <table
-        align="center"
-        class="table table-hover table-condensed table-striped table-collapse "
-        scrollTop={"Bottom"}
-        style={{ tableLayout: "fixed" }}
-      >
-        <thead>
-          <tr>
-            <th scope="col">Sr. No.</th>
-            <th scope="col">
+				<div class="table100 ver3 m-b-110">
+					<div class="table100-head">
+						<table class="table table-hover table-borderless">
+							<thead>
+							<tr>
+            <th >Sr. No.</th>
+            <th  >
               NAME
               {"    "}
               <Icons.ArrowUp
@@ -34,8 +32,8 @@ const UserTable = props => {
                 onClick={() => props.onSortingClick("name", "desc")}
               ></Icons.ArrowDown>
             </th>
-            <th scope="col">
-              CONTECT NO.
+            <th>
+              Phone
               <Icons.ArrowUp
                 size={25}
                 onClick={() => props.onSortingClick("contect", "asc")}
@@ -45,7 +43,7 @@ const UserTable = props => {
                 onClick={() => props.onSortingClick("contect", "desc")}
               ></Icons.ArrowDown>
             </th>
-            <th scope="col">
+            <th >
               BANK
               <Icons.ArrowUp
                 size={25}
@@ -56,33 +54,37 @@ const UserTable = props => {
                 onClick={() => props.onSortingClick("bankname", "desc")}
               ></Icons.ArrowDown>
             </th>
-            <th scope="col">CARD NUMBER</th>
-            <th scope="col">Payment</th>
-            <th scope="col">Profile</th>
+            <th >CARD NUMBER</th>
+            <th >Payment</th>
+            <th >Profile</th>
           </tr>
-        </thead>
-        <tbody>
-          {props.user.map((userobj, id) => {
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body">            
+						<table  style={{ tableLayout: "fixed" }}class="table table-hover" >
+            
+							<tbody>
+                
+							{props.user.map((userobj, id) => {
             return (
               <tr
                 key={id}
-                style={{
-                  borderTop: "1px solid",
-                  borderColor: "rgb(174, 172, 213)"
-                }}
-              >
+               
+                 >
                 <td>{++count}</td>
                 <td>{userobj.name}</td>
                 <td>{userobj.contect}</td>
                 <td>{userobj.bankname}</td>
                 <td>{userobj.cardnumber}</td>
                 <td>
-                  <Bootstrap.Button
+                  {/* <Bootstrap.Button
                     size="sm"
                     onClick={() => props.onPaymentCall(userobj)}
-                  >
-                    Payment
-                  </Bootstrap.Button>
+                link to={"/Payment"}  > */}
+                   <Link to={"/Payment"}  >Payment</Link>
+                  {/* </Bootstrap.Button> */}
                 </td>
                 <td>
                   <Icons.Pencil
@@ -102,10 +104,19 @@ const UserTable = props => {
                 </td>
               </tr>
             );
-          })}
-        </tbody>
-      </table>
-    </div>
+           })}
+          {/* <tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr>
+           <tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr>
+           <tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr>
+           <tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr><tr><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td><td>a</td></tr>
+						  */}
+            	</tbody>
+						</table>
+					</div>
+				</div>
+				</div>
+		
+    
   );
 };
 export default UserTable;
