@@ -1,23 +1,16 @@
 import React, { Component } from "react";
-import { MDBDataTable} from "mdbreact";
+
 import UserTable from "../UserTable/index";
 import SearchInput from "../SearchAndPagiAndAddUser/index";
 import UserAddForm from "../UserAddForm/index";
-import PaymentMethod from "../PaymentMethod/index";
-
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from "react-router-dom";
-
 import { getUsers, deleteUsers, addUsers } from "../../ApiServiceProvider";
 
 // CardVaultList
 // CardVaultAddEdit isVisible, cardVaultId={1}
 export default class HomePage extends Component {
+  
   state = {
+    loading:true,
     isDialogVisible: false,
     isAdd: false,
     isEdit: false,
@@ -52,7 +45,7 @@ export default class HomePage extends Component {
     });
   };
   componentDidMount() {
-    this.getUserHelper();
+     this.getUserHelper();
   }
   handlerPageChange = (page, limit) => {
     this.setState(
@@ -121,7 +114,7 @@ export default class HomePage extends Component {
     let banknameError = "";
     let cardnumberError = "";
     !this.state.user.name ? (nameError = "Name Required!") : (nameError = "");
-    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]*$")) {
+    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]")) {
       nameError = "Invalid Name!";
     }
     !this.state.user.contect
@@ -218,22 +211,6 @@ export default class HomePage extends Component {
       this.getUserHelper();
     });
   };
-  handlerPayment = userobj => {
-    return (
-      <React.Fragment>
-        <Redirect to="/Payment"></Redirect>
-        <div>
-          <Router>
-            <Switch>
-              <Route exact path="/Payment">
-                <PaymentMethod />
-              </Route>
-            </Switch>
-          </Router>
-        </div>
-      </React.Fragment>
-    );
-  };
 
   render() {
     var totalPage;
@@ -246,8 +223,6 @@ export default class HomePage extends Component {
     }
     return (
       <React.Fragment>
-       
-        <hr />
         <SearchInput
           items={rows}
           limit={this.state.pageLimit}
@@ -258,16 +233,6 @@ export default class HomePage extends Component {
           onAddUserClick={this.handlerNewUserButtonClick}
           onPageChange={this.handlerPageChange}
         />
-        
-        {/* <MDBDataTable
-              striped
-              bordered
-              small
-              align="center"
-              class="table table-hover table-condensed table-striped table-collapse table-bordered"
-              style={{ tableLayout: "fixed" }}
-              
-            /> */}
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
@@ -290,14 +255,17 @@ export default class HomePage extends Component {
             onCloseClick={this.handlerClose}
           />
         )}
-        <UserTable
+        <hr />
+       
+        <UserTable 
           user={this.state.users}
-          isdisable={this.state.isdisable}
-          onEditUserClick={this.handlerEditUserClick}
+           isdisable={this.state.isdisable}
+         onEditUserClick={this.handlerEditUserClick}
           onPaymentCall={this.handlerPayment}
           onDeleteUserClick={this.handlerDeleteUserClick}
           onSortingClick={this.handlerSorting}
-        />
+        /> 
+      
       </React.Fragment>
     );
   }
