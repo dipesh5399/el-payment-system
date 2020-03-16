@@ -5,8 +5,8 @@ import { Modal, Table, Button, InputGroup, FormControl } from "react-bootstrap";
 //   state = {
 //     firstName: ''
 //   }
-  // onSave: 
-  //   this.props.onClose()
+// onSave:
+//   this.props.onClose()
 
 const UserAddForm = props => {
   return (
@@ -21,26 +21,26 @@ const UserAddForm = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div class="table-responsive-sm was-validated">
+        
+        <div class="table-responsive-sm ">
           <Table>
             <tr>
               <InputGroup>
                 {" "}
                 <FormControl
                   type="text"
-                                 
                   name="name"
                   class="form-control"
                   title="Only Alphabatical words excepted."
                   value={props.nameKey.name}
                   onChange={props.onChange}
-                  placeholder="   Name"
+                  placeholder=" Name"
                   id="tdstyle"
-                required/>
+                />
               </InputGroup>
 
               {props.errordialog && (
-                <p style={{ color: "red" }}>{props.errors.nameError}</p>
+                <h6 style={{ color: "red" }}>{props.errors.nameError}</h6>
               )}
             </tr>
             <br />
@@ -59,7 +59,7 @@ const UserAddForm = props => {
               </InputGroup>
             </tr>
             {props.errordialog && (
-              <p style={{ color: "red" }}>{props.errors.contectError}</p>
+              <h6 style={{ color: "red" }}>{props.errors.contectError}</h6>
             )}
             <br />
             <tr>
@@ -70,11 +70,12 @@ const UserAddForm = props => {
                 name="bankname"
                 title="Please Select Bank ."
                 class="form-control"
-             required >
-                <option></option>
+                required
+              >
+                <option>Select Bank</option>
                 <option>ADC</option>
                 <option>BOI</option>
-                <option>HDFC</option> <option>IndusLand Bank</option>{" "}
+                <option>HDFC</option> <option>IndusLand Bank</option>
                 <option>Maharastra Bank</option>
                 <option>Punjab Bank</option>
                 <option>SBI</option>
@@ -82,52 +83,35 @@ const UserAddForm = props => {
               </select>
             </tr>
             {props.errordialog && (
-              <p style={{ color: "red" }}>{props.errors.banknameError}</p>
+              <h6 style={{ color: "red" }}>{props.errors.banknameError}</h6>
             )}
             <br />
             <tr>
               <InputGroup>
                 <FormControl
                   type="text"
-                 
-                  name="cardnumber"
+                  name="Email"
                   id="tdstyle"
-                  placeholder="   Card Number"
+                  placeholder=" Email"
                   class="form-control"
-                  value={props.nameKey.cardnumber}
+                  value={props.nameKey.Email}
                   onChange={props.onChange}
                   required
                 />
               </InputGroup>
             </tr>
             {props.errordialog && (
-              <p style={{ color: "red" }}>{props.errors.cardnumberError}</p>
+              <h6 style={{ color: "red" }}>{props.errors.cardnumberError}</h6>
             )}
           </Table>
         </div>
       </Modal.Body>
       <br></br>
       <Modal.Footer>
-        <Button
-          type="submit"
-          style={{
-            backgroundColor: "rgb(154, 193, 209)",
-            color: "black",
-            textShadow: " 0 0 black"
-          }}
-          onClick={props.onClick}
-        >
+        <Button type="submit" variant="primary" onClick={props.onClick}>
           Submit
         </Button>
-        <Button
-          type="Cancel"
-          style={{
-            backgroundColor: "rgb(248, 91, 91)",
-            color: "black",
-            textShadow: " 0 0 black"
-          }}
-          onClick={props.onCloseClick}
-        >
+        <Button type="Cancel" variant="secondary" onClick={props.onCloseClick}>
           Cancel
         </Button>
       </Modal.Footer>
