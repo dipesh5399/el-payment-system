@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-
 import UserTable from "../UserTable/index";
 import SearchInput from "../SearchAndPagiAndAddUser/index";
 import UserAddForm from "../UserAddForm/index";
+import DM from "../DelForm/index";
 import { getUsers, deleteUsers, addUsers } from "../../ApiServiceProvider";
 
 // CardVaultList
 // CardVaultAddEdit isVisible, cardVaultId={1}
+var id;
 export default class HomePage extends Component {
-  
   state = {
-    loading:true,
     isDialogVisible: false,
     isAdd: false,
     isEdit: false,
@@ -22,7 +21,8 @@ export default class HomePage extends Component {
       name: "",
       contect: "",
       bankname: "",
-      cardnumber: ""
+      cardnumber: "",
+      Email: ""
     },
     fieldError: {
       nameError: "",
@@ -34,7 +34,8 @@ export default class HomePage extends Component {
     pageLimit: 5,
     isdisable: false,
     sortBy: "name",
-    sortOrder: "asc"
+    sortOrder: "asc",
+    deletepage: false
   };
   getUserHelper = () => {
     getUsers(this.state, true).then(fetchusers => {
@@ -45,7 +46,7 @@ export default class HomePage extends Component {
     });
   };
   componentDidMount() {
-     this.getUserHelper();
+    this.getUserHelper();
   }
   handlerPageChange = (page, limit) => {
     this.setState(
@@ -105,17 +106,31 @@ export default class HomePage extends Component {
     }));
   };
   handlerDeleteUserClick = userid => {
-    deleteUsers(userid);
-    this.getUserDetails();
+    this.setState(state => ({
+      ...state,
+      deletepage: true
+    }));
+     id = userid;
+    
+  
   };
+  handlerdeleteUser=() =>{
+    this.setState(state => ({
+      ...state,
+      deletepage: false
+    }));
+    deleteUsers(id);
+    this.getUserDetails();
+  }
+
   validate = () => {
     let nameError = "";
     let contectError = "";
     let banknameError = "";
     let cardnumberError = "";
     !this.state.user.name ? (nameError = "Name Required!") : (nameError = "");
-    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]")) {
-      nameError = "Invalid Name!";
+    if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]*$")) {
+      nameError = "Firstname and Lastname Required!";
     }
     !this.state.user.contect
       ? (contectError = "Contect Number Required!")
@@ -126,23 +141,16 @@ export default class HomePage extends Component {
     if (this.state.user.contect && this.state.user.contect.length !== 10) {
       contectError = "Invalid Contact Number!Length must be 10.";
     }
-    !this.state.user.cardnumber
-      ? (cardnumberError = "Card Number Required!")
+    !this.state.user.Email
+      ? (cardnumberError = "Email Required!")
       : (cardnumberError = "");
     if (
-      this.state.user.cardnumber &&
-      !this.state.user.cardnumber.match(
-        "[0-9][0-9][0-9][0-9]" +
-          "-" +
-          "[0-9][0-9][0-9][0-9]" +
-          "-" +
-          "[0-9][0-9][0-9][0-9]" +
-          "-" +
-          "[0-9][0-9][0-9][0-9]"
+      this.state.user.Email &&
+      !this.state.user.Email.match(
+        "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$"
       )
     ) {
-      cardnumberError =
-        "Invalid CardNumber! Please Match this format(0000-0000-0000-0000)";
+      cardnumberError = "Invalid Email!";
     }
     if (nameError || contectError || banknameError || cardnumberError) {
       this.setState({
@@ -178,6 +186,7 @@ export default class HomePage extends Component {
           totalItems: this.state.users
         })
       );
+      this.getUserDetails();
     }
   };
   handlerClose = () => {
@@ -185,7 +194,8 @@ export default class HomePage extends Component {
       isAdd: false,
       isEdit: false,
       isDialogVisible: false,
-      errorDialog: false
+      errorDialog: false,
+      deletepage: false
     });
   };
   handlerSorting = (attrib, order) => {
@@ -223,6 +233,7 @@ export default class HomePage extends Component {
     }
     return (
       <React.Fragment>
+        <hr />
         <SearchInput
           items={rows}
           limit={this.state.pageLimit}
@@ -233,6 +244,7 @@ export default class HomePage extends Component {
           onAddUserClick={this.handlerNewUserButtonClick}
           onPageChange={this.handlerPageChange}
         />
+        <hr />
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
@@ -244,6 +256,7 @@ export default class HomePage extends Component {
             onCloseClick={this.handlerClose}
           />
         )}
+        {this.state.deletepage && <DM id={id} onConfirmClick={this.handlerdeleteUser} onCloseClick={this.handlerClose} />}
         {this.state.isEdit && (
           <UserAddForm
             nameKey={this.state.user}
@@ -255,17 +268,14 @@ export default class HomePage extends Component {
             onCloseClick={this.handlerClose}
           />
         )}
-        <hr />
-       
-        <UserTable 
+        <UserTable
           user={this.state.users}
-           isdisable={this.state.isdisable}
-         onEditUserClick={this.handlerEditUserClick}
+          isdisable={this.state.isdisable}
+          onEditUserClick={this.handlerEditUserClick}
           onPaymentCall={this.handlerPayment}
           onDeleteUserClick={this.handlerDeleteUserClick}
           onSortingClick={this.handlerSorting}
-        /> 
-      
+        />
       </React.Fragment>
     );
   }
