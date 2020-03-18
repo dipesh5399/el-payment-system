@@ -7,6 +7,15 @@ import { Modal, Table, Button, InputGroup, FormControl } from "react-bootstrap";
 //   }
 // onSave:
 //   this.props.onClose()
+// fetch(`http://localhost:3005/users/${addUserDetails.id}`, {
+
+//     body: JSON.stringify({
+//       name: addUserDetails.name,
+//       contect: addUserDetails.contect,
+//       bankname: addUserDetails.bankname,
+//       Email: addUserDetails.Email
+//     })
+//   });
 
 const UserAddForm = props => {
   return (
@@ -17,16 +26,15 @@ const UserAddForm = props => {
     >
       <Modal.Header>
         <Modal.Title>
+          {console.log(props.nameKey.id)}
           {props.addform ? "Welcome User!" : "User Details"}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        
-        <div class="table-responsive-sm ">
+        <div class="table-responsive-sm was-touched">
           <Table>
             <tr>
               <InputGroup>
-                {" "}
                 <FormControl
                   type="text"
                   name="name"
@@ -36,6 +44,7 @@ const UserAddForm = props => {
                   onChange={props.onChange}
                   placeholder=" Name"
                   id="tdstyle"
+                  required
                 />
               </InputGroup>
 
@@ -63,16 +72,30 @@ const UserAddForm = props => {
             )}
             <br />
             <tr>
+              {/* <div class="form-group">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" id="exampleFormControlSelect1"  required multiple>
+    <option disabled>Select Bank</option>
+                <option>ADC</option>
+                <option>BOI</option>
+                <option>HDFC</option> <option>IndusLand Bank</option>
+                <option>Maharastra Bank</option>
+                <option>Punjab Bank</option>
+                <option>SBI</option>
+                <option>UBI</option>
+    </select>
+  </div> */}
+              {/* Selected Bank: {props.nameKey.bankname}  */}
               <select
                 value={props.nameKey.bankname}
                 onChange={props.onChange}
-                id="tdstyle"
+                id="exampleFormControlSelect1"
                 name="bankname"
                 title="Please Select Bank ."
                 class="form-control"
                 required
               >
-                <option>Select Bank</option>
+                <option disabled>Select Bank</option>
                 <option>ADC</option>
                 <option>BOI</option>
                 <option>HDFC</option> <option>IndusLand Bank</option>
@@ -82,6 +105,7 @@ const UserAddForm = props => {
                 <option>UBI</option>
               </select>
             </tr>
+
             {props.errordialog && (
               <h6 style={{ color: "red" }}>{props.errors.banknameError}</h6>
             )}
@@ -101,7 +125,7 @@ const UserAddForm = props => {
               </InputGroup>
             </tr>
             {props.errordialog && (
-              <h6 style={{ color: "red" }}>{props.errors.cardnumberError}</h6>
+              <h6 style={{ color: "red" }}>{props.errors.emailError}</h6>
             )}
           </Table>
         </div>
