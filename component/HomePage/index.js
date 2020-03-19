@@ -7,14 +7,12 @@ import {
   deleteUsersAPI,
   addUsersAPI
 } from "../../ApiServiceProvider";
-
 // CardVaultList
 // CardVaultAddEdit isVisible, cardVaultId={1}
 export default class HomePage extends Component {
   state = {
     isDialogVisible: false,
     isAdd: false,
-    isEdit: false,
     errorDialog: false,
     search: "",
     users: [],
@@ -55,45 +53,51 @@ export default class HomePage extends Component {
       this.getUsers();
     });
   };
-  userDetailChangeHandler = event => {
-    const {
-      target: { name, value }
-    } = event;
-    let input = `${[name]}`;
-    let field = `${[name]}Error`;
-    this.setState({
-      user: {
-        ...this.state.user,
-        [name]: value
-      }
-    });
-    //  if (input === "name") {
-    this.setState({
-      errorDialog: true,
-      fieldError: {
-        ...this.state.fieldError,
-        [field]:
-          value.length === 0
-            ? "Required!"
-            : // : !value.match("^[A-Za-z]*$")
-              // ? "Invalid Name!"
-              ""
-      }
-    });
-    // }
-  };
-  newUserButtonClickHandler = () => {
+  // userDetailChangeHandler = event => {
+  //   const {
+  //     target: { name, value }
+  //   } = event;
+  //   let input = `${[name]}`;
+  //   let field = `${[name]}Error`;
+  //   this.setState({
+  //     user: {
+  //       ...this.state.user,
+  //       [name]: value
+  //     }
+  //   });
+  //   let pattern;
+  //   let msg;
+  //   if (input === "name") {
+  //     pattern = !value.match("^[A-Za-z]*$");
+  //     msg = "Invalid Name!";
+  //   }
+  //   if (input === "contect") {
+  //     pattern = value.length !== 10;
+  //     msg = "Invalid Contact Number!Length must be 10.";
+  //   }
+  //   if (input === "Email") {
+  //     pattern = !value.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$");
+  //     msg = "Invalid Email!";
+  //   }
+  //   this.setState({
+  //     errorDialog: true,
+  //     fieldError: {
+  //       ...this.state.fieldError,
+  //       [field]: value.length === 0 ? "Required!" : pattern ? `${msg}` : ""
+  //     }
+  //   });
+  //   console.log(this.state.user);
+  // };
+  newUserButtonClickHandler = userid => {
+    console.log("called");
     this.setState(state => ({
-      ...state,
       isAdd: true,
-      isDialogVisible: !state.isDialogVisible,
-      user: { id: "" }
+      user: userid,
+      isDialogVisible: !state.isDialogVisible
     }));
   };
-  editUserClickHandler = userobj => {
+  editUserClickHandler = userid => {
     this.setState(state => ({
-      ...state,
-      user: userobj,
       isEdit: true,
       isDialogVisible: !state.isDialogVisible
     }));
@@ -108,7 +112,7 @@ export default class HomePage extends Component {
     let nameError = "";
     let contectError = "";
     let banknameError = "";
-    let emailError = "";
+    let EmailError = "";
     !this.state.user.name ? (nameError = "Required!") : (nameError = "");
     if (this.state.user.name && !this.state.user.name.match("^[A-Za-z]*$")) {
       nameError = "Invalid Name!";
@@ -122,16 +126,16 @@ export default class HomePage extends Component {
     if (this.state.user.contect && this.state.user.contect.length !== 10) {
       contectError = "Invalid Contact Number!Length must be 10.";
     }
-    !this.state.user.Email ? (emailError = "Required!") : (emailError = "");
+    !this.state.user.Email ? (EmailError = "Required!") : (EmailError = "");
     if (
       this.state.user.Email &&
       !this.state.user.Email.match(
         "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$"
       )
     ) {
-      emailError = "Invalid Email!";
+      EmailError = "Invalid Email!";
     }
-    if (nameError || contectError || banknameError || emailError) {
+    if (nameError || contectError || banknameError || EmailError) {
       this.setState({
         errorDialog: true,
         fieldError: {
@@ -139,7 +143,7 @@ export default class HomePage extends Component {
           nameError,
           contectError,
           banknameError,
-          emailError
+          EmailError
         }
       });
       return false;
@@ -150,17 +154,19 @@ export default class HomePage extends Component {
     var isValid = this.validate();
     if (isValid) {
       addUsersAPI(this.state.user, this.state.isEdit).then(
-        this.setState(state => ({
-          isAdd: false,
-          isEdit: false,
-          isDialogVisible: false,
-          errorDialog: false,
-          fieldError: {
-            ...this.state.fieldError
+        this.setState(
+          {
+            user: newusersdetails,
+            isAdd: false,
+            isEdit: false,
+            isDialogVisible: false,
+            errorDialog: false,
+            fieldError: {}
           },
-          ...state,
-          user: newusersdetails
-        }))
+          () => {
+            console.log("done", this.state);
+          }
+        )
       );
     }
     this.getUsers();
@@ -176,25 +182,19 @@ export default class HomePage extends Component {
         nameError: "",
         contectError: "",
         banknameError: "",
-        emailError: ""
+        EmailError: ""
       }
     });
   };
   sortingHandler = (attrib, order) => {
     this.setState(
       {
-        ...this.state,
         sortBy: attrib,
         sortOrder: order,
         activePage: 1
       },
       () => this.getUsers()
     );
-  };
-  clearHandler = () => {
-    this.setState({ ...this.state, search: "" }, () => {
-      this.getUsers();
-    });
   };
 
   render() {
@@ -207,7 +207,6 @@ export default class HomePage extends Component {
           searchKey={this.state.search}
           activePage={this.state.activePage}
           onChange={this.onChangeHandler}
-          onClear={this.clearHandler}
           onAddUserClick={this.newUserButtonClickHandler}
           onPageChange={this.pageChangeHandler}
         />
@@ -215,29 +214,15 @@ export default class HomePage extends Component {
         {this.state.isAdd && (
           <UserAddForm
             nameKey={this.state.user}
-            addform={this.state.isAdd}
             errordialog={this.state.errorDialog}
             errors={this.state.fieldError}
-            onChange={this.userDetailChangeHandler}
-            onClick={this.submitHandler}
-            onCloseClick={this.closeHandler}
-          />
-        )}
-        {this.state.isEdit && (
-          <UserAddForm
-            nameKey={this.state.user}
-            addform={this.state.isAdd}
-            errordialog={this.state.errorDialog}
-            errors={this.state.fieldError}
-            onChange={this.userDetailChangeHandler}
-            onClick={this.submitHandler}
             onCloseClick={this.closeHandler}
           />
         )}
         <UserTable
           user={this.state.users}
           isDisable={this.state.isDisable}
-          onEditUserClick={this.editUserClickHandler}
+          onEditUserClick={this.newUserButtonClickHandler}
           onPaymentCall={this.handlerPayment}
           onDeleteUserClick={this.deleteUserClickHandler}
           onSortingClick={this.sortingHandler}
