@@ -11,12 +11,12 @@ const SearchInput = props => {
       <Bootstrap.Container>
         <Bootstrap.Row>
           <Bootstrap.Col xs="15">
-            <h3 >Contact Vault</h3>
+            <h3>Contact Vault</h3>
           </Bootstrap.Col>
           <Bootstrap.Col></Bootstrap.Col>
           <Bootstrap.Col xs="15">
             <Bootstrap.Button
-              onClick={props.onAddUserClick}
+              onClick={() => props.onAddUserClick("")}
               variant="secondary"
             >
               Request New Card
@@ -70,7 +70,6 @@ const SearchInput = props => {
                     <Dropdown.Item>20</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                
               </span>
             </div>
           </Bootstrap.Col>
