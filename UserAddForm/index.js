@@ -1,149 +1,6 @@
-// import React from "react";
-// import {
-//   Modal,
-//   Table,
-//   Button,
-//   InputGroup,
-//   FormControl,
-//   Dropdown
-// } from "react-bootstrap";
-
-// // <UserAddEditForm userId onClose />;
-// //   state = {
-// //     firstName: ''
-// //   }
-// // onSave:
-// //   this.props.onClose()
-// // fetch(`http://localhost:3005/users/${addUserDetails.id}`, {
-
-// //     body: JSON.stringify({
-// //       name: addUserDetails.name,
-// //       contect: addUserDetails.contect,
-// //       bankname: addUserDetails.bankname,
-// //       Email: addUserDetails.Email
-// //     })
-// //   });
-
-// const UserAddForm = props => {
-//   return (
-//     <Modal
-//       show={true}
-//       shouldCloseOnEsc={false}
-//       shouldCloseOnOverlayClick={false}
-//     >
-//       <Modal.Header>
-//         <Modal.Title>
-//           {console.log(props.nameKey.id)}
-//           {props.addform ? "Welcome User!" : "User Details"}
-//         </Modal.Title>
-//       </Modal.Header>
-//       <Modal.Body>
-//         <div class="table-responsive-sm">
-//           <Table>
-//             <tr>
-//               <InputGroup>
-//                 <FormControl
-//                   type="text"
-//                   name="name"
-//                   class="form-control"
-//                   title="Only Alphabatical words excepted."
-//                   value={props.nameKey.name}
-//                   onChange={props.onChange}
-//                   placeholder=" Name"
-//                   id="tdstyle"
-//                   required
-//                 />
-//               </InputGroup>
-//               {props.errordialog && (
-//                 <h6 style={{ color: "red" }}>{props.errors.nameError}</h6>)}
-//             </tr>
-//             <br />
-//             <tr>
-//               <InputGroup>
-//                 <FormControl
-//                   type="number"
-//                   class="form-control"
-//                   name="contect"
-//                   value={props.nameKey.contect}
-//                   onChange={props.onChange}
-//                   id="tdstyle"
-//                   placeholder="Contact Number"
-//                   required
-//                 />
-//               </InputGroup>
-//             </tr>
-//             {props.errordialog && (
-//               <h6 style={{ color: "red" }}>{props.errors.contectError}</h6>
-//             )}
-//             <br />
-//             <tr>
-//               <select
-//                 value={props.nameKey.bankname}
-//                 onChange={props.onChange}
-//                 id="exampleFormControlSelect1"
-//                 name="bankname"
-//                 title="Please Select Bank ."
-//                 class="form-control"
-//                 required
-//               >
-//                 <option selected>Select Bank</option>
-//                 <option>ADC</option>
-//                 <option>BOI</option>
-//                 <option>HDFC</option> <option>IndusLand Bank</option>
-//                 <option>Maharastra Bank</option>
-//                 <option>Punjab Bank</option>
-//                 <option>SBI</option>
-//                 <option>UBI</option>
-//               </select>
-//             </tr>
-
-//             {props.errordialog && (
-//               <h6 style={{ color: "red" }}>{props.errors.banknameError}</h6>
-//             )}
-//             <br />
-//             <tr>
-//               <InputGroup>
-//                 <FormControl
-//                   type="text"
-//                   name="Email"
-//                   id="tdstyle"
-//                   placeholder=" Email"
-//                   class="form-control"
-//                   value={props.nameKey.Email}
-//                   onChange={props.onChange}
-//                   required
-//                 />
-//               </InputGroup>
-//             </tr>
-//             {props.errordialog && (
-//               <h6 style={{ color: "red" }}>{props.errors.EmailError}</h6>
-//             )}
-//           </Table>
-//         </div>
-//       </Modal.Body>
-//       <br></br>
-//       <Modal.Footer>
-//         <Button type="submit" variant="primary" onClick={props.onClick}>
-//           Submit
-//         </Button>
-//         <Button type="Cancel" variant="secondary" onClick={props.onCloseClick}>
-//           Cancel
-//         </Button>
-//       </Modal.Footer>
-//     </Modal>
-//   );
-// };
-
-// export default UserAddForm;
 import React, { Component } from "react";
-import {
-  Modal,
-  Table,
-  Button,
-  InputGroup,
-  FormControl,
-  Dropdown
-} from "react-bootstrap";
+import { Modal, Table, Button, InputGroup, FormControl } from "react-bootstrap";
+
 import { getUserByIDAPI, addUsersAPI } from "../../ApiServiceProvider";
 
 export default class index extends Component {
@@ -152,9 +9,16 @@ export default class index extends Component {
       id: "",
       name: "",
       contect: "",
-      bankname: "",
+      bankname: "ADC",
       Email: ""
-    }
+    },
+    fieldError: {
+      nameError: "",
+      contectError: "",
+      banknameError: "",
+      EmailError: ""
+    },
+    formValid: true
   };
   userDetailChangeHandler = event => {
     const {
@@ -182,39 +46,53 @@ export default class index extends Component {
       pattern = !value.match("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}$");
       msg = "Invalid Email!";
     }
-    this.setState({
-      errorDialog: true,
-      fieldError: {
-        ...this.state.fieldError,
-        [field]: value.length === 0 ? "Required!" : pattern ? `${msg}` : ""
-      }
-    });
-  };
-
-  componentDidMount() {
-    console.log(this.state.user);
-    getUserByIDAPI(this.props.nameKey).then(fetchusers => {
-      this.setState({
-        user: this.props.nameKey ? fetchusers.items : this.state.user
-      });
-    });
-    console.log(this.props.nameKey);
-  }
-  submitHandler = newusersdetails => {
-    // var isValid = this.validate();
-    //if (isValid) {
-    addUsersAPI(this.state.user, this.props.nameKey === "" ? false : true).then(
-      this.setState(
-        {
-          user: newusersdetails
-        },
-        () => {
-          console.log("done", this.state);
+    this.setState(
+      {
+        errorDialog: true,
+        fieldError: {
+          ...this.state.fieldError,
+          [field]: value.length === 0 ? "Required!" : pattern ? `${msg}` : ""
         }
-      )
+      },
+      () => this.validate()
     );
-    // }
-    //this.getUsers();
+  };
+  componentDidMount() {
+    if (this.props.nameKey !== "") {
+      getUserByIDAPI(this.props.nameKey).then(fetchusers => {
+        this.setState({
+          user: fetchusers.items
+        });
+      });
+    }
+  }
+  validate = () => {
+    if (
+      this.state.user.name !== "" &&
+      this.state.user.bankname !== "" &&
+      this.state.user.Email !== "" &&
+      this.state.user.name.match("^[A-Za-z]*$") &&
+      this.state.user.contect.length === 10 &&
+      this.state.user.Email.match(
+        "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]+.[a-zA-Z]{1,5}$"
+      )
+    ) {
+      this.setState({
+        formValid: false
+      });
+    } else {
+      this.setState({
+        formValid: true
+      });
+    }
+  };
+  submitHandler = newusersdetails => {
+    addUsersAPI(this.state.user, this.state.user.id !== "" ? true : false).then(
+      this.setState({
+        user: newusersdetails
+      })
+    );
+    this.props.onCloseClick();
   };
   render() {
     return (
@@ -226,7 +104,6 @@ export default class index extends Component {
         >
           <Modal.Header>
             <Modal.Title>
-              {console.log(this.state)}
               {this.props.addform ? "Welcome User!" : "User Details"}
             </Modal.Title>
           </Modal.Header>
@@ -238,20 +115,18 @@ export default class index extends Component {
                     <FormControl
                       type="text"
                       name="name"
-                      class="form-control"
+                      class="form-control "
                       title="Only Alphabatical words excepted."
                       value={this.state.user.name}
                       onChange={this.userDetailChangeHandler}
                       placeholder=" Name"
                       id="tdstyle"
-                      required
+                      required={true}
                     />
                   </InputGroup>
-                  {this.props.errordialog && (
-                    <h6 style={{ color: "red" }}>
-                      {this.state.fieldError.nameError}
-                    </h6>
-                  )}
+                  <h6 style={{ color: "red" }}>
+                    {this.state.fieldError.nameError}
+                  </h6>
                 </tr>
                 <br />
                 <tr>
@@ -268,11 +143,9 @@ export default class index extends Component {
                     />
                   </InputGroup>
                 </tr>
-                {this.props.errordialog && (
-                  <h6 style={{ color: "red" }}>
-                    {this.props.errors.contectError}
-                  </h6>
-                )}
+                <h6 style={{ color: "red" }}>
+                  {this.state.fieldError.contectError}
+                </h6>
                 <br />
                 <tr>
                   <select
@@ -284,7 +157,6 @@ export default class index extends Component {
                     class="form-control"
                     required
                   >
-                    <option selected>Select Bank</option>
                     <option>ADC</option>
                     <option>BOI</option>
                     <option>HDFC</option> <option>IndusLand Bank</option>
@@ -294,12 +166,9 @@ export default class index extends Component {
                     <option>UBI</option>
                   </select>
                 </tr>
-
-                {this.props.errordialog && (
-                  <h6 style={{ color: "red" }}>
-                    {this.props.errors.banknameError}
-                  </h6>
-                )}
+                <h6 style={{ color: "red" }}>
+                  {this.state.fieldError.banknameError}
+                </h6>
                 <br />
                 <tr>
                   <InputGroup>
@@ -315,11 +184,9 @@ export default class index extends Component {
                     />
                   </InputGroup>
                 </tr>
-                {this.props.errordialog && (
-                  <h6 style={{ color: "red" }}>
-                    {this.props.errors.EmailError}
-                  </h6>
-                )}
+                <h6 style={{ color: "red" }}>
+                  {this.state.fieldError.EmailError}
+                </h6>
               </Table>
             </div>
           </Modal.Body>
@@ -329,6 +196,7 @@ export default class index extends Component {
               type="submit"
               variant="primary"
               onClick={this.submitHandler}
+              disabled={this.state.formValid}
             >
               Submit
             </Button>
