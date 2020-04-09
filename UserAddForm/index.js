@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Modal, Table, Button, InputGroup, FormControl } from "react-bootstrap";
+import { Modal, Table, Button, FormControl } from "react-bootstrap";
 
 import { getUserByIDAPI, addUsersAPI } from "../../ApiServiceProvider";
-
 export default class index extends Component {
   state = {
     user: {
@@ -89,9 +88,10 @@ export default class index extends Component {
   submitHandler = newusersdetails => {
     addUsersAPI(this.state.user, this.state.user.id !== "" ? true : false).then(
       this.setState({
-        user: newusersdetails
+        user: newusersdetails,    
       })
     );
+
     this.props.onCloseClick();
   };
   render() {
@@ -103,34 +103,32 @@ export default class index extends Component {
           shouldCloseOnOverlayClick={false}
         >
           <Modal.Header>
-            <Modal.Title>
-              {this.props.addform ? "Welcome User!" : "User Details"}
-            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div class="table-responsive-sm">
+            <div class="table-responsive-sm was-validated">
               <Table>
                 <tr>
-                  <InputGroup>
+                 
                     <FormControl
                       type="text"
                       name="name"
-                      class="form-control "
+                      class="form-control"
                       title="Only Alphabatical words excepted."
                       value={this.state.user.name}
                       onChange={this.userDetailChangeHandler}
                       placeholder=" Name"
                       id="tdstyle"
                       required={true}
+                      onBlur={this.userDetailChangeHandler}
                     />
-                  </InputGroup>
+                 
                   <h6 style={{ color: "red" }}>
                     {this.state.fieldError.nameError}
                   </h6>
-                </tr>
-                <br />
+                  <br/>
+                </tr>            
                 <tr>
-                  <InputGroup>
+                  
                     <FormControl
                       type="number"
                       class="form-control"
@@ -139,39 +137,17 @@ export default class index extends Component {
                       onChange={this.userDetailChangeHandler}
                       id="tdstyle"
                       placeholder="Contact Number"
+                      onBlur={this.userDetailChangeHandler}
                       required
                     />
-                  </InputGroup>
+                 
                 </tr>
                 <h6 style={{ color: "red" }}>
                   {this.state.fieldError.contectError}
                 </h6>
-                <br />
+              <br/>
                 <tr>
-                  <select
-                    value={this.state.user.bankname}
-                    onChange={this.userDetailChangeHandler}
-                    id="exampleFormControlSelect1"
-                    name="bankname"
-                    title="Please Select Bank ."
-                    class="form-control"
-                    required
-                  >
-                    <option>ADC</option>
-                    <option>BOI</option>
-                    <option>HDFC</option> <option>IndusLand Bank</option>
-                    <option>Maharastra Bank</option>
-                    <option>Punjab Bank</option>
-                    <option>SBI</option>
-                    <option>UBI</option>
-                  </select>
-                </tr>
-                <h6 style={{ color: "red" }}>
-                  {this.state.fieldError.banknameError}
-                </h6>
-                <br />
-                <tr>
-                  <InputGroup>
+                  
                     <FormControl
                       type="text"
                       name="Email"
@@ -180,9 +156,9 @@ export default class index extends Component {
                       class="form-control"
                       value={this.state.user.Email}
                       onChange={this.userDetailChangeHandler}
-                      required
-                    />
-                  </InputGroup>
+                      onBlur={this.userDetailChangeHandler}
+                   required />
+             
                 </tr>
                 <h6 style={{ color: "red" }}>
                   {this.state.fieldError.EmailError}
